@@ -1,116 +1,88 @@
-Projectile Motion Analysis: Range vs. Angle of Projection
-1. Theoretical Foundation
+# Projectile Motion Analysis: Range vs. Angle of Projection
 
-Basic principles: Projectile motion combines constant horizontal velocity with accelerated vertical motion due to gravity
-Horizontal motion:
+## 1. Theoretical Foundation
 
-No forces act horizontally (ignoring air resistance)
-Acceleration ax = 0
-Velocity remains constant: vx = v₀cosθ
-Position: x(t) = v₀cosθ × t
+**Basic principles**: Projectile motion combines constant horizontal velocity with accelerated vertical motion due to gravity
 
+### Horizontal motion:
+- No forces act horizontally (ignoring air resistance)
+- Acceleration $a_x = 0$
+- Velocity remains constant: $v_x = v_0\cos\theta$
+- Position: $x(t) = v_0\cos\theta \times t$
 
-Vertical motion:
+### Vertical motion:
+- Gravity pulls downward: $a_y = -g$
+- Velocity decreases linearly: $v_y = v_0\sin\theta - gt$
+- Position: $y(t) = h_0 + v_0\sin\theta \times t - \frac{1}{2}gt^2$
 
-Gravity pulls downward: ay = -g
-Velocity decreases linearly: vy = v₀sinθ - gt
-Position: y(t) = h₀ + v₀sinθ × t - ½gt²
+### Trajectory equation:
+- Parabolic path: $y = h_0 + x\tan\theta - \frac{g\times x^2}{2v_0^2\cos^2\theta}$
+- Different initial conditions create a family of parabolas
 
+## 2. Range Analysis
 
-Trajectory equation:
+### Range formula (for ground-level launch):
+- $R = \frac{v_0^2\sin(2\theta)}{g}$
+- Derived by finding when $y(t) = 0$ and calculating horizontal distance
 
-Parabolic path: y = h₀ + x×tanθ - (g×x²)/(2v₀²cos²θ)
-Different initial conditions create a family of parabolas
+### Angle dependence:
+- Maximum range occurs at $\theta = 45°$ (when $\sin(2\theta) = 1$)
+- Range is symmetric around $45°$ (e.g., $30°$ and $60°$ give same range)
+- Zero range at $0°$ and $90°$ (purely horizontal or vertical launch)
 
+### Parameter effects:
+- Velocity: Range $\propto v_0^2$ (doubling velocity quadruples range)
+- Gravity: Range $\propto \frac{1}{g}$ (lower gravity increases range)
+- Initial height: For $h_0 > 0$, optimal angle $< 45°$
 
+## 3. Practical Applications
 
-2. Range Analysis
+### Sports applications:
+- Basketball: Different shooting angles for different distances
+- Golf: Launch angles vary by club and desired trajectory
+- Soccer: Kick angles affect distance and height of passes/shots
 
-Range formula (for ground-level launch):
+### Engineering applications:
+- Water fountains: Different nozzle angles create different arc patterns
+- Irrigation systems: Spray patterns optimized for coverage
+- Catapults and trebuchets: Medieval engineers used these principles
 
-R = (v₀²sin2θ)/g
-Derived by finding when y(t) = 0 and calculating horizontal distance
+### Space exploration:
+- Moon ($g \approx 1.6 \text{ m/s}^2$): Same throw goes about $6\times$ further than on Earth
+- Mars ($g \approx 3.7 \text{ m/s}^2$): Same throw goes about $2.7\times$ further than on Earth
 
+## 4. Implementation
 
-Angle dependence:
+### Computational approach:
+- Created Python functions to calculate trajectories and ranges
+- Used NumPy for calculations and Matplotlib for visualization
 
-Maximum range occurs at θ = 45° (when sin2θ = 1)
-Range is symmetric around 45° (e.g., 30° and 60° give same range)
-Zero range at 0° and 90° (purely horizontal or vertical launch)
+### Key visualizations:
+- Range vs. angle curve showing maximum at $45°$
+- Multiple trajectory paths at different launch angles
+- Parameter variation studies showing effects of initial velocity and gravity
 
+### Simulation capabilities:
+- Can predict range for any combination of velocity, angle, and gravity
+- Visualizes trajectory shapes for different launch conditions
+- Compares projectile behavior across different environments
 
-Parameter effects:
+## 5. Limitations and Extensions
 
-Velocity: Range ∝ v₀² (doubling velocity quadruples range)
-Gravity: Range ∝ 1/g (lower gravity increases range)
-Initial height: For h₀ > 0, optimal angle < 45°
+### Current limitations:
+- No air resistance (unrealistic for many real scenarios)
+- Constant gravitational field (only accurate near Earth's surface)
+- No accounting for wind or other external forces
 
+### Possible improvements:
+- Add air resistance (drag proportional to velocity or velocity squared)
+- Allow for uneven terrain (different launch and landing heights)
+- Include wind effects and Magnus force (for spinning projectiles)
+- Use numerical methods for scenarios without analytical solutions
 
+## Python Implementation
 
-3. Practical Applications
-
-Sports applications:
-
-Basketball: Different shooting angles for different distances
-Golf: Launch angles vary by club and desired trajectory
-Soccer: Kick angles affect distance and height of passes/shots
-
-
-Engineering applications:
-
-Water fountains: Different nozzle angles create different arc patterns
-Irrigation systems: Spray patterns optimized for coverage
-Catapults and trebuchets: Medieval engineers used these principles
-
-
-Space exploration:
-
-Moon (g ≈ 1.6 m/s²): Same throw goes about 6× further than on Earth
-Mars (g ≈ 3.7 m/s²): Same throw goes about 2.7× further than on Earth
-
-
-
-4. Implementation
-
-Computational approach:
-
-Created Python functions to calculate trajectories and ranges
-Used NumPy for calculations and Matplotlib for visualization
-
-
-Key visualizations:
-
-Range vs. angle curve showing maximum at 45°
-Multiple trajectory paths at different launch angles
-Parameter variation studies showing effects of initial velocity and gravity
-
-
-Simulation capabilities:
-
-Can predict range for any combination of velocity, angle, and gravity
-Visualizes trajectory shapes for different launch conditions
-Compares projectile behavior across different environments
-
-
-
-5. Limitations and Extensions
-
-Current limitations:
-
-No air resistance (unrealistic for many real scenarios)
-Constant gravitational field (only accurate near Earth's surface)
-No accounting for wind or other external forces
-
-
-Possible improvements:
-
-Add air resistance (drag proportional to velocity or velocity squared)
-Allow for uneven terrain (different launch and landing heights)
-Include wind effects and Magnus force (for spinning projectiles)
-Use numerical methods for scenarios without analytical solutions
-
-
-
+```python
 # Import necessary libraries
 import numpy as np
 import matplotlib.pyplot as plt
@@ -369,3 +341,4 @@ if __name__ == "__main__":
     study_gravity_effect()
     
     print("\nAnalysis complete! All graphs have been generated.")
+```
