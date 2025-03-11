@@ -6,13 +6,13 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../../img/favicon.ico" rel="shortcut icon"/>
-<title>Problem 1 - Physics and Mathematics</title>
+<title>Projectile Motion Analysis: Range vs. Angle of Projection - Physics and Mathematics</title>
 <link href="../../../css/theme.css" rel="stylesheet"/>
 <link href="../../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "Problem 1";
+        var mkdocs_page_name = "Projectile Motion Analysis: Range vs. Angle of Projection";
         var mkdocs_page_input_path = "1 Physics/1 Mechanics/Problem_1.md";
         var mkdocs_page_url = null;
       </script>
@@ -46,8 +46,58 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal current">1 Mechanics</a>
 <ul class="current">
-<li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
+<li class="toctree-l2 current"><a class="reference internal current" href="#">Projectile Motion Analysis: Range vs. Angle of Projection</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#1-theoretical-foundation">1. Theoretical Foundation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#horizontal-motion">Horizontal motion:</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#vertical-motion">Vertical motion:</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#trajectory-equation">Trajectory equation:</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-range-analysis">2. Range Analysis</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#range-formula-for-ground-level-launch">Range formula (for ground-level launch):</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#angle-dependence">Angle dependence:</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-effects">Parameter effects:</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-practical-applications">3. Practical Applications</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#sports-applications">Sports applications:</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#engineering-applications">Engineering applications:</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#space-exploration">Space exploration:</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-implementation">4. Implementation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#computational-approach">Computational approach:</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#key-visualizations">Key visualizations:</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#simulation-capabilities">Simulation capabilities:</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#5-limitations-and-extensions">5. Limitations and Extensions</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#current-limitations">Current limitations:</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#possible-improvements">Possible improvements:</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#python-implementation">Python Implementation</a>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_2/">Problem 2</a>
@@ -163,7 +213,7 @@
 <li><a aria-label="Docs" class="icon icon-home" href="../../.."></a></li>
 <li class="breadcrumb-item">1 Physics</li>
 <li class="breadcrumb-item">1 Mechanics</li>
-<li class="breadcrumb-item active">Problem 1</li>
+<li class="breadcrumb-item active">Projectile Motion Analysis: Range vs. Angle of Projection</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -171,321 +221,354 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<p>Projectile Motion Analysis: Range vs. Angle of Projection
-1. Theoretical Foundation</p>
-<p>Basic principles: Projectile motion combines constant horizontal velocity with accelerated vertical motion due to gravity
-Horizontal motion:</p>
-<p>No forces act horizontally (ignoring air resistance)
-Acceleration ax = 0
-Velocity remains constant: vx = v₀cosθ
-Position: x(t) = v₀cosθ × t</p>
-<p>Vertical motion:</p>
-<p>Gravity pulls downward: ay = -g
-Velocity decreases linearly: vy = v₀sinθ - gt
-Position: y(t) = h₀ + v₀sinθ × t - ½gt²</p>
-<p>Trajectory equation:</p>
-<p>Parabolic path: y = h₀ + x×tanθ - (g×x²)/(2v₀²cos²θ)
-Different initial conditions create a family of parabolas</p>
-<ol>
-<li>Range Analysis</li>
-</ol>
-<p>Range formula (for ground-level launch):</p>
-<p>R = (v₀²sin2θ)/g
-Derived by finding when y(t) = 0 and calculating horizontal distance</p>
-<p>Angle dependence:</p>
-<p>Maximum range occurs at θ = 45° (when sin2θ = 1)
-Range is symmetric around 45° (e.g., 30° and 60° give same range)
-Zero range at 0° and 90° (purely horizontal or vertical launch)</p>
-<p>Parameter effects:</p>
-<p>Velocity: Range ∝ v₀² (doubling velocity quadruples range)
-Gravity: Range ∝ 1/g (lower gravity increases range)
-Initial height: For h₀ &gt; 0, optimal angle &lt; 45°</p>
-<ol>
-<li>Practical Applications</li>
-</ol>
-<p>Sports applications:</p>
-<p>Basketball: Different shooting angles for different distances
-Golf: Launch angles vary by club and desired trajectory
-Soccer: Kick angles affect distance and height of passes/shots</p>
-<p>Engineering applications:</p>
-<p>Water fountains: Different nozzle angles create different arc patterns
-Irrigation systems: Spray patterns optimized for coverage
-Catapults and trebuchets: Medieval engineers used these principles</p>
-<p>Space exploration:</p>
-<p>Moon (g ≈ 1.6 m/s²): Same throw goes about 6× further than on Earth
-Mars (g ≈ 3.7 m/s²): Same throw goes about 2.7× further than on Earth</p>
-<ol>
-<li>Implementation</li>
-</ol>
-<p>Computational approach:</p>
-<p>Created Python functions to calculate trajectories and ranges
-Used NumPy for calculations and Matplotlib for visualization</p>
-<p>Key visualizations:</p>
-<p>Range vs. angle curve showing maximum at 45°
-Multiple trajectory paths at different launch angles
-Parameter variation studies showing effects of initial velocity and gravity</p>
-<p>Simulation capabilities:</p>
-<p>Can predict range for any combination of velocity, angle, and gravity
-Visualizes trajectory shapes for different launch conditions
-Compares projectile behavior across different environments</p>
-<ol>
-<li>Limitations and Extensions</li>
-</ol>
-<p>Current limitations:</p>
-<p>No air resistance (unrealistic for many real scenarios)
-Constant gravitational field (only accurate near Earth's surface)
-No accounting for wind or other external forces</p>
-<p>Possible improvements:</p>
-<p>Add air resistance (drag proportional to velocity or velocity squared)
-Allow for uneven terrain (different launch and landing heights)
-Include wind effects and Magnus force (for spinning projectiles)
-Use numerical methods for scenarios without analytical solutions</p>
-<h1 id="import-necessary-libraries">Import necessary libraries</h1>
-<p>import numpy as np
-import matplotlib.pyplot as plt</p>
-<h1 id="-">-------------------------------------------------------------------------</h1>
-<h1 id="part-1-basic-functions-for-projectile-motion">PART 1: Basic Functions for Projectile Motion</h1>
-<h1 id="-_1">-------------------------------------------------------------------------</h1>
-<p>def calculate_range(initial_velocity, angle_degrees, gravity=9.81):
+<h1 id="projectile-motion-analysis-range-vs-angle-of-projection">Projectile Motion Analysis: Range vs. Angle of Projection</h1>
+<h2 id="1-theoretical-foundation">1. Theoretical Foundation</h2>
+<p><strong>Basic principles</strong>: Projectile motion combines constant horizontal velocity with accelerated vertical motion due to gravity</p>
+<h3 id="horizontal-motion">Horizontal motion:</h3>
+<ul>
+<li>No forces act horizontally (ignoring air resistance)</li>
+<li>Acceleration <span class="arithmatex">\(a_x = 0\)</span></li>
+<li>Velocity remains constant: <span class="arithmatex">\(v_x = v_0\cos\theta\)</span></li>
+<li>Position: <span class="arithmatex">\(x(t) = v_0\cos\theta \times t\)</span></li>
+</ul>
+<h3 id="vertical-motion">Vertical motion:</h3>
+<ul>
+<li>Gravity pulls downward: <span class="arithmatex">\(a_y = -g\)</span></li>
+<li>Velocity decreases linearly: <span class="arithmatex">\(v_y = v_0\sin\theta - gt\)</span></li>
+<li>Position: <span class="arithmatex">\(y(t) = h_0 + v_0\sin\theta \times t - \frac{1}{2}gt^2\)</span></li>
+</ul>
+<h3 id="trajectory-equation">Trajectory equation:</h3>
+<ul>
+<li>Parabolic path: <span class="arithmatex">\(y = h_0 + x\tan\theta - \frac{g\times x^2}{2v_0^2\cos^2\theta}\)</span></li>
+<li>Different initial conditions create a family of parabolas</li>
+</ul>
+<h2 id="2-range-analysis">2. Range Analysis</h2>
+<h3 id="range-formula-for-ground-level-launch">Range formula (for ground-level launch):</h3>
+<ul>
+<li><span class="arithmatex">\(R = \frac{v_0^2\sin(2\theta)}{g}\)</span></li>
+<li>Derived by finding when <span class="arithmatex">\(y(t) = 0\)</span> and calculating horizontal distance</li>
+</ul>
+<h3 id="angle-dependence">Angle dependence:</h3>
+<ul>
+<li>Maximum range occurs at <span class="arithmatex">\(\theta = 45°\)</span> (when <span class="arithmatex">\(\sin(2\theta) = 1\)</span>)</li>
+<li>Range is symmetric around <span class="arithmatex">\(45°\)</span> (e.g., <span class="arithmatex">\(30°\)</span> and <span class="arithmatex">\(60°\)</span> give same range)</li>
+<li>Zero range at <span class="arithmatex">\(0°\)</span> and <span class="arithmatex">\(90°\)</span> (purely horizontal or vertical launch)</li>
+</ul>
+<h3 id="parameter-effects">Parameter effects:</h3>
+<ul>
+<li>Velocity: Range <span class="arithmatex">\(\propto v_0^2\)</span> (doubling velocity quadruples range)</li>
+<li>Gravity: Range <span class="arithmatex">\(\propto \frac{1}{g}\)</span> (lower gravity increases range)</li>
+<li>Initial height: For <span class="arithmatex">\(h_0 &gt; 0\)</span>, optimal angle <span class="arithmatex">\(&lt; 45°\)</span></li>
+</ul>
+<h2 id="3-practical-applications">3. Practical Applications</h2>
+<h3 id="sports-applications">Sports applications:</h3>
+<ul>
+<li>Basketball: Different shooting angles for different distances</li>
+<li>Golf: Launch angles vary by club and desired trajectory</li>
+<li>Soccer: Kick angles affect distance and height of passes/shots</li>
+</ul>
+<h3 id="engineering-applications">Engineering applications:</h3>
+<ul>
+<li>Water fountains: Different nozzle angles create different arc patterns</li>
+<li>Irrigation systems: Spray patterns optimized for coverage</li>
+<li>Catapults and trebuchets: Medieval engineers used these principles</li>
+</ul>
+<h3 id="space-exploration">Space exploration:</h3>
+<ul>
+<li>Moon (<span class="arithmatex">\(g \approx 1.6 \text{ m/s}^2\)</span>): Same throw goes about <span class="arithmatex">\(6\times\)</span> further than on Earth</li>
+<li>Mars (<span class="arithmatex">\(g \approx 3.7 \text{ m/s}^2\)</span>): Same throw goes about <span class="arithmatex">\(2.7\times\)</span> further than on Earth</li>
+</ul>
+<h2 id="4-implementation">4. Implementation</h2>
+<h3 id="computational-approach">Computational approach:</h3>
+<ul>
+<li>Created Python functions to calculate trajectories and ranges</li>
+<li>Used NumPy for calculations and Matplotlib for visualization</li>
+</ul>
+<h3 id="key-visualizations">Key visualizations:</h3>
+<ul>
+<li>Range vs. angle curve showing maximum at <span class="arithmatex">\(45°\)</span></li>
+<li>Multiple trajectory paths at different launch angles</li>
+<li>Parameter variation studies showing effects of initial velocity and gravity</li>
+</ul>
+<h3 id="simulation-capabilities">Simulation capabilities:</h3>
+<ul>
+<li>Can predict range for any combination of velocity, angle, and gravity</li>
+<li>Visualizes trajectory shapes for different launch conditions</li>
+<li>Compares projectile behavior across different environments</li>
+</ul>
+<h2 id="5-limitations-and-extensions">5. Limitations and Extensions</h2>
+<h3 id="current-limitations">Current limitations:</h3>
+<ul>
+<li>No air resistance (unrealistic for many real scenarios)</li>
+<li>Constant gravitational field (only accurate near Earth's surface)</li>
+<li>No accounting for wind or other external forces</li>
+</ul>
+<h3 id="possible-improvements">Possible improvements:</h3>
+<ul>
+<li>Add air resistance (drag proportional to velocity or velocity squared)</li>
+<li>Allow for uneven terrain (different launch and landing heights)</li>
+<li>Include wind effects and Magnus force (for spinning projectiles)</li>
+<li>Use numerical methods for scenarios without analytical solutions</li>
+</ul>
+<h2 id="python-implementation">Python Implementation</h2>
+<pre><code class="language-python"># Import necessary libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+#-------------------------------------------------------------------------
+# PART 1: Basic Functions for Projectile Motion
+#-------------------------------------------------------------------------
+
+def calculate_range(initial_velocity, angle_degrees, gravity=9.81):
     """
-    Calculate the horizontal range of a projectile launched from ground level.</p>
-<pre><code>Parameters:
-initial_velocity: Initial speed in m/s
-angle_degrees: Launch angle in degrees
-gravity: Gravitational acceleration in m/s^2 (default: Earth's gravity)
+    Calculate the horizontal range of a projectile launched from ground level.
 
-Returns:
-The horizontal range in meters
-"""
-# Convert angle from degrees to radians
-angle_radians = np.radians(angle_degrees)
+    Parameters:
+    initial_velocity: Initial speed in m/s
+    angle_degrees: Launch angle in degrees
+    gravity: Gravitational acceleration in m/s^2 (default: Earth's gravity)
 
-# Apply the range formula: R = (v0^2 * sin(2θ)) / g
-horizontal_range = (initial_velocity**2 * np.sin(2 * angle_radians)) / gravity
+    Returns:
+    The horizontal range in meters
+    """
+    # Convert angle from degrees to radians
+    angle_radians = np.radians(angle_degrees)
 
-return horizontal_range
-</code></pre>
-<h1 id="-_2">-------------------------------------------------------------------------</h1>
-<h1 id="part-2-visualization-functions">PART 2: Visualization Functions</h1>
-<h1 id="-_3">-------------------------------------------------------------------------</h1>
-<p>def plot_range_vs_angle():
+    # Apply the range formula: R = (v0^2 * sin(2θ)) / g
+    horizontal_range = (initial_velocity**2 * np.sin(2 * angle_radians)) / gravity
+
+    return horizontal_range
+
+#-------------------------------------------------------------------------
+# PART 2: Visualization Functions
+#-------------------------------------------------------------------------
+
+def plot_range_vs_angle():
     """
     Create a plot showing how range varies with launch angle.
     """
     # Define parameters
     initial_velocity = 20.0    # Initial velocity in m/s
-    gravity = 9.81            # Earth's gravity in m/s^2</p>
-<pre><code># Create an array of angles from 0 to 90 degrees
-angles = np.linspace(0, 90, 180)
+    gravity = 9.81            # Earth's gravity in m/s^2
 
-# Calculate range for each angle
-ranges = []
-for angle in angles:
-    range_value = calculate_range(initial_velocity, angle, gravity)
-    ranges.append(range_value)
+    # Create an array of angles from 0 to 90 degrees
+    angles = np.linspace(0, 90, 180)
 
-# Find the maximum range and its corresponding angle
-max_range_index = np.argmax(ranges)
-max_range = ranges[max_range_index]
-optimal_angle = angles[max_range_index]
+    # Calculate range for each angle
+    ranges = []
+    for angle in angles:
+        range_value = calculate_range(initial_velocity, angle, gravity)
+        ranges.append(range_value)
 
-# Create the plot
-plt.figure(figsize=(10, 6))
-plt.plot(angles, ranges)
+    # Find the maximum range and its corresponding angle
+    max_range_index = np.argmax(ranges)
+    max_range = ranges[max_range_index]
+    optimal_angle = angles[max_range_index]
 
-# Mark the optimal angle on the plot
-plt.scatter(optimal_angle, max_range, color='red', s=50, zorder=5)
-plt.annotate(f'Optimal angle: {optimal_angle:.1f}°\nMax range: {max_range:.2f} m',
-            xy=(optimal_angle, max_range), xytext=(optimal_angle+5, max_range*0.9),
-            arrowprops=dict(arrowstyle='-&gt;'))
+    # Create the plot
+    plt.figure(figsize=(10, 6))
+    plt.plot(angles, ranges)
 
-# Add labels and title
-plt.xlabel('Launch Angle (degrees)')
-plt.ylabel('Horizontal Range (meters)')
-plt.title(f'Range vs. Launch Angle (Initial Velocity = {initial_velocity} m/s)')
-plt.grid(True)
+    # Mark the optimal angle on the plot
+    plt.scatter(optimal_angle, max_range, color='red', s=50, zorder=5)
+    plt.annotate(f'Optimal angle: {optimal_angle:.1f}°\nMax range: {max_range:.2f} m',
+                xy=(optimal_angle, max_range), xytext=(optimal_angle+5, max_range*0.9),
+                arrowprops=dict(arrowstyle='-&gt;'))
 
-# Save and display the plot
-plt.savefig('range_vs_angle.png', dpi=300)
-plt.show()
-</code></pre>
-<p>def plot_single_trajectory():
+    # Add labels and title
+    plt.xlabel('Launch Angle (degrees)')
+    plt.ylabel('Horizontal Range (meters)')
+    plt.title(f'Range vs. Launch Angle (Initial Velocity = {initial_velocity} m/s)')
+    plt.grid(True)
+
+    # Save and display the plot
+    plt.savefig('range_vs_angle.png', dpi=300)
+    plt.show()
+
+def plot_single_trajectory():
     """
     Plot the trajectory of a projectile launched at 45 degrees.
     """
     # Define parameters
     initial_velocity = 20.0    # Initial velocity in m/s
     angle_degrees = 45        # Launch angle in degrees
-    gravity = 9.81            # Earth's gravity in m/s^2</p>
-<pre><code># Convert angle to radians
-angle_radians = np.radians(angle_degrees)
+    gravity = 9.81            # Earth's gravity in m/s^2
 
-# Calculate time of flight (when projectile returns to ground)
-time_of_flight = 2 * initial_velocity * np.sin(angle_radians) / gravity
+    # Convert angle to radians
+    angle_radians = np.radians(angle_degrees)
 
-# Create time points from launch to landing
-time_points = np.linspace(0, time_of_flight, 100)
+    # Calculate time of flight (when projectile returns to ground)
+    time_of_flight = 2 * initial_velocity * np.sin(angle_radians) / gravity
 
-# Calculate x and y positions at each time point
-x_positions = initial_velocity * np.cos(angle_radians) * time_points
-y_positions = initial_velocity * np.sin(angle_radians) * time_points - 0.5 * gravity * time_points**2
+    # Create time points from launch to landing
+    time_points = np.linspace(0, time_of_flight, 100)
 
-# Create the plot
-plt.figure(figsize=(10, 6))
-plt.plot(x_positions, y_positions)
+    # Calculate x and y positions at each time point
+    x_positions = initial_velocity * np.cos(angle_radians) * time_points
+    y_positions = initial_velocity * np.sin(angle_radians) * time_points - 0.5 * gravity * time_points**2
 
-# Add labels and title
-plt.xlabel('Horizontal Distance (m)')
-plt.ylabel('Height (m)')
-plt.title(f'Projectile Trajectory (Initial Velocity = {initial_velocity} m/s, Angle = {angle_degrees}°)')
-plt.grid(True)
-plt.axis('equal')  # Equal scaling for x and y
+    # Create the plot
+    plt.figure(figsize=(10, 6))
+    plt.plot(x_positions, y_positions)
 
-# Save and display the plot
-plt.savefig('trajectory_45deg.png', dpi=300)
-plt.show()
-</code></pre>
-<p>def plot_multiple_trajectories():
+    # Add labels and title
+    plt.xlabel('Horizontal Distance (m)')
+    plt.ylabel('Height (m)')
+    plt.title(f'Projectile Trajectory (Initial Velocity = {initial_velocity} m/s, Angle = {angle_degrees}°)')
+    plt.grid(True)
+    plt.axis('equal')  # Equal scaling for x and y
+
+    # Save and display the plot
+    plt.savefig('trajectory_45deg.png', dpi=300)
+    plt.show()
+
+def plot_multiple_trajectories():
     """
     Plot multiple trajectories at different launch angles.
     """
     # Define parameters
     initial_velocity = 20.0   # Initial velocity in m/s
-    gravity = 9.81           # Earth's gravity in m/s^2</p>
-<pre><code># Different launch angles to compare
-angle_list = [15, 30, 45, 60, 75]
+    gravity = 9.81           # Earth's gravity in m/s^2
 
-# Create the plot
-plt.figure(figsize=(10, 6))
+    # Different launch angles to compare
+    angle_list = [15, 30, 45, 60, 75]
 
-# Plot trajectory for each angle
-for angle_degrees in angle_list:
-    # Convert angle to radians
-    angle_radians = np.radians(angle_degrees)
+    # Create the plot
+    plt.figure(figsize=(10, 6))
 
-    # Calculate time of flight
-    time_of_flight = 2 * initial_velocity * np.sin(angle_radians) / gravity
+    # Plot trajectory for each angle
+    for angle_degrees in angle_list:
+        # Convert angle to radians
+        angle_radians = np.radians(angle_degrees)
 
-    # Create time points
-    time_points = np.linspace(0, time_of_flight, 100)
+        # Calculate time of flight
+        time_of_flight = 2 * initial_velocity * np.sin(angle_radians) / gravity
 
-    # Calculate positions
-    x_positions = initial_velocity * np.cos(angle_radians) * time_points
-    y_positions = initial_velocity * np.sin(angle_radians) * time_points - 0.5 * gravity * time_points**2
+        # Create time points
+        time_points = np.linspace(0, time_of_flight, 100)
 
-    # Plot this trajectory
-    plt.plot(x_positions, y_positions, label=f'Angle = {angle_degrees}°')
+        # Calculate positions
+        x_positions = initial_velocity * np.cos(angle_radians) * time_points
+        y_positions = initial_velocity * np.sin(angle_radians) * time_points - 0.5 * gravity * time_points**2
 
-# Add labels and title
-plt.xlabel('Horizontal Distance (m)')
-plt.ylabel('Height (m)')
-plt.title(f'Projectile Trajectories at Different Angles (Initial Velocity = {initial_velocity} m/s)')
-plt.grid(True)
-plt.legend()
+        # Plot this trajectory
+        plt.plot(x_positions, y_positions, label=f'Angle = {angle_degrees}°')
 
-# Save and display the plot
-plt.savefig('multiple_trajectories.png', dpi=300)
-plt.show()
-</code></pre>
-<h1 id="-_4">-------------------------------------------------------------------------</h1>
-<h1 id="part-3-parameter-analysis">PART 3: Parameter Analysis</h1>
-<h1 id="-_5">-------------------------------------------------------------------------</h1>
-<p>def study_velocity_effect():
+    # Add labels and title
+    plt.xlabel('Horizontal Distance (m)')
+    plt.ylabel('Height (m)')
+    plt.title(f'Projectile Trajectories at Different Angles (Initial Velocity = {initial_velocity} m/s)')
+    plt.grid(True)
+    plt.legend()
+
+    # Save and display the plot
+    plt.savefig('multiple_trajectories.png', dpi=300)
+    plt.show()
+
+#-------------------------------------------------------------------------
+# PART 3: Parameter Analysis
+#-------------------------------------------------------------------------
+
+def study_velocity_effect():
     """
     Investigate how initial velocity affects the range.
     """
     # Define parameters
     gravity = 9.81           # Earth's gravity in m/s^2
-    angles = np.linspace(0, 90, 180)  # Angles from 0 to 90 degrees</p>
-<pre><code># Create the plot
-plt.figure(figsize=(10, 6))
+    angles = np.linspace(0, 90, 180)  # Angles from 0 to 90 degrees
 
-# Analyze different initial velocities
-for velocity in [10, 20, 30]:
-    # Calculate range for each angle at this velocity
-    ranges = []
-    for angle in angles:
-        range_value = calculate_range(velocity, angle, gravity)
-        ranges.append(range_value)
+    # Create the plot
+    plt.figure(figsize=(10, 6))
 
-    # Plot the range curve for this velocity
-    plt.plot(angles, ranges, label=f'Initial Velocity = {velocity} m/s')
+    # Analyze different initial velocities
+    for velocity in [10, 20, 30]:
+        # Calculate range for each angle at this velocity
+        ranges = []
+        for angle in angles:
+            range_value = calculate_range(velocity, angle, gravity)
+            ranges.append(range_value)
 
-# Add labels and title
-plt.xlabel('Launch Angle (degrees)')
-plt.ylabel('Horizontal Range (meters)')
-plt.title('Effect of Initial Velocity on Projectile Range')
-plt.grid(True)
-plt.legend()
+        # Plot the range curve for this velocity
+        plt.plot(angles, ranges, label=f'Initial Velocity = {velocity} m/s')
 
-# Save and display the plot
-plt.savefig('velocity_effect.png', dpi=300)
-plt.show()
-</code></pre>
-<p>def study_gravity_effect():
+    # Add labels and title
+    plt.xlabel('Launch Angle (degrees)')
+    plt.ylabel('Horizontal Range (meters)')
+    plt.title('Effect of Initial Velocity on Projectile Range')
+    plt.grid(True)
+    plt.legend()
+
+    # Save and display the plot
+    plt.savefig('velocity_effect.png', dpi=300)
+    plt.show()
+
+def study_gravity_effect():
     """
     Investigate how gravity affects the range (different planets).
     """
     # Define parameters
     initial_velocity = 20.0   # Initial velocity in m/s
-    angles = np.linspace(0, 90, 180)  # Angles from 0 to 90 degrees</p>
-<pre><code># Gravity values for different celestial bodies (in m/s²)
-gravity_values = {
-    'Earth': 9.81,
-    'Mars': 3.7,
-    'Moon': 1.6
-}
+    angles = np.linspace(0, 90, 180)  # Angles from 0 to 90 degrees
 
-# Create the plot
-plt.figure(figsize=(10, 6))
+    # Gravity values for different celestial bodies (in m/s²)
+    gravity_values = {
+        'Earth': 9.81,
+        'Mars': 3.7,
+        'Moon': 1.6
+    }
 
-# Analyze different gravity values
-for planet, gravity in gravity_values.items():
-    # Calculate range for each angle with this gravity
-    ranges = []
-    for angle in angles:
-        range_value = calculate_range(initial_velocity, angle, gravity)
-        ranges.append(range_value)
+    # Create the plot
+    plt.figure(figsize=(10, 6))
 
-    # Plot the range curve for this gravity
-    plt.plot(angles, ranges, label=f'{planet} (g = {gravity} m/s²)')
+    # Analyze different gravity values
+    for planet, gravity in gravity_values.items():
+        # Calculate range for each angle with this gravity
+        ranges = []
+        for angle in angles:
+            range_value = calculate_range(initial_velocity, angle, gravity)
+            ranges.append(range_value)
 
-# Add labels and title
-plt.xlabel('Launch Angle (degrees)')
-plt.ylabel('Horizontal Range (meters)')
-plt.title(f'Effect of Gravity on Projectile Range (Initial Velocity = {initial_velocity} m/s)')
-plt.grid(True)
-plt.legend()
+        # Plot the range curve for this gravity
+        plt.plot(angles, ranges, label=f'{planet} (g = {gravity} m/s²)')
 
-# Save and display the plot
-plt.savefig('gravity_effect.png', dpi=300)
-plt.show()
-</code></pre>
-<h1 id="-_6">-------------------------------------------------------------------------</h1>
-<h1 id="part-4-main-execution">PART 4: Main Execution</h1>
-<h1 id="-_7">-------------------------------------------------------------------------</h1>
-<p>if <strong>name</strong> == "<strong>main</strong>":
-    print("=== Investigating the Range as a Function of the Angle of Projection ===")</p>
-<pre><code># 1. Plot range vs. angle relationship
-print("\n1. Analyzing how range depends on launch angle...")
-plot_range_vs_angle()
+    # Add labels and title
+    plt.xlabel('Launch Angle (degrees)')
+    plt.ylabel('Horizontal Range (meters)')
+    plt.title(f'Effect of Gravity on Projectile Range (Initial Velocity = {initial_velocity} m/s)')
+    plt.grid(True)
+    plt.legend()
 
-# 2. Plot single trajectory at optimal angle
-print("\n2. Plotting trajectory at the optimal angle (45°)...")
-plot_single_trajectory()
+    # Save and display the plot
+    plt.savefig('gravity_effect.png', dpi=300)
+    plt.show()
 
-# 3. Compare trajectories at different angles
-print("\n3. Comparing trajectories at different launch angles...")
-plot_multiple_trajectories()
+#-------------------------------------------------------------------------
+# PART 4: Main Execution
+#-------------------------------------------------------------------------
 
-# 4. Study parameter effects
-print("\n4. Studying how initial velocity affects range...")
-study_velocity_effect()
+if __name__ == "__main__":
+    print("=== Investigating the Range as a Function of the Angle of Projection ===")
 
-print("\n5. Studying how gravity affects range (different planets)...")
-study_gravity_effect()
+    # 1. Plot range vs. angle relationship
+    print("\n1. Analyzing how range depends on launch angle...")
+    plot_range_vs_angle()
 
-print("\nAnalysis complete! All graphs have been generated.")
+    # 2. Plot single trajectory at optimal angle
+    print("\n2. Plotting trajectory at the optimal angle (45°)...")
+    plot_single_trajectory()
+
+    # 3. Compare trajectories at different angles
+    print("\n3. Comparing trajectories at different launch angles...")
+    plot_multiple_trajectories()
+
+    # 4. Study parameter effects
+    print("\n4. Studying how initial velocity affects range...")
+    study_velocity_effect()
+
+    print("\n5. Studying how gravity affects range (different planets)...")
+    study_gravity_effect()
+
+    print("\nAnalysis complete! All graphs have been generated.")
 </code></pre>
 </div>
 </div><footer>
