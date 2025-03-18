@@ -220,24 +220,30 @@
 <h1 id="simplified-analysis-forced-damped-pendulum">Simplified Analysis: Forced Damped Pendulum</h1>
 <h2 id="1-theoretical-foundation">1. Theoretical Foundation</h2>
 <h3 id="basic-pendulum-model">Basic Pendulum Model</h3>
-<p>A forced damped pendulum consists of:
-- A mass hanging from a pivot point
-- Damping (friction) that slows the motion
-- An external force pushing the pendulum periodically</p>
-<p>The motion is described by the equation:
-- <span class="arithmatex">\(\frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\sin(\theta) = A\cos(\omega t)\)</span></p>
-<p>Where:
-- <span class="arithmatex">\(\theta\)</span> is the angle from vertical
-- <span class="arithmatex">\(b\)</span> is the damping coefficient (friction)
-- <span class="arithmatex">\(g\)</span> is gravity and <span class="arithmatex">\(L\)</span> is length
-- <span class="arithmatex">\(A\)</span> is the strength of the external force
-- <span class="arithmatex">\(\omega\)</span> is how quickly the external force oscillates</p>
+<p>A forced damped pendulum consists of:</p>
+<ul>
+<li>A mass hanging from a pivot point</li>
+<li>Damping (friction) that slows the motion</li>
+<li>An external force pushing the pendulum periodically</li>
+</ul>
+<p>The motion is described by the equation:</p>
+<div class="arithmatex">\[\frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\sin(\theta) = A\cos(\omega t)\]</div>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\(\theta\)</span> is the angle from vertical</li>
+<li><span class="arithmatex">\(b\)</span> is the damping coefficient (friction)</li>
+<li><span class="arithmatex">\(g\)</span> is gravity and <span class="arithmatex">\(L\)</span> is length</li>
+<li><span class="arithmatex">\(A\)</span> is the strength of the external force</li>
+<li><span class="arithmatex">\(\omega\)</span> is how quickly the external force oscillates</li>
+</ul>
 <p>For small angles, we can simplify by replacing <span class="arithmatex">\(\sin(\theta)\)</span> with <span class="arithmatex">\(\theta\)</span>, making the equation easier to solve.</p>
 <h3 id="resonance">Resonance</h3>
-<p>Resonance occurs when the external force pushes at just the right frequency:
-- Each push adds to the pendulum's motion
-- The amplitude becomes much larger
-- Similar to pushing someone on a swing with the right timing</p>
+<p>Resonance occurs when the external force pushes at just the right frequency:</p>
+<ul>
+<li>Each push adds to the pendulum's motion</li>
+<li>The amplitude becomes much larger</li>
+<li>Similar to pushing someone on a swing with the right timing</li>
+</ul>
 <h2 id="2-different-behaviors">2. Different Behaviors</h2>
 <h3 id="effect-of-damping">Effect of Damping</h3>
 <ul>
@@ -258,11 +264,13 @@
 <li><strong>Fast frequency</strong>: Pendulum can't keep up, resulting in small movements</li>
 </ul>
 <h3 id="chaos">Chaos</h3>
-<p>When conditions are right, the pendulum can show chaotic behavior:
-- Extremely sensitive to starting conditions
-- Long-term motion becomes unpredictable
-- Small changes lead to completely different patterns
-- Still governed by deterministic physics (not random)</p>
+<p>When conditions are right, the pendulum can show chaotic behavior:</p>
+<ul>
+<li>Extremely sensitive to starting conditions</li>
+<li>Long-term motion becomes unpredictable</li>
+<li>Small changes lead to completely different patterns</li>
+<li>Still governed by deterministic physics (not random)</li>
+</ul>
 <h2 id="3-real-world-applications">3. Real-World Applications</h2>
 <h3 id="engineering-examples">Engineering Examples</h3>
 <ul>
@@ -277,10 +285,12 @@
 <li><strong>Musical instruments</strong> like the vibration of strings</li>
 </ul>
 <h2 id="4-computer-simulation">4. Computer Simulation</h2>
-<p>Our Python program simulates the pendulum by:
-- Breaking down the complex motion into small time steps
-- Calculating position and velocity at each step
-- Creating visualizations to understand the behavior</p>
+<p>Our Python program simulates the pendulum by:</p>
+<ul>
+<li>Breaking down the complex motion into small time steps</li>
+<li>Calculating position and velocity at each step</li>
+<li>Creating visualizations to understand the behavior</li>
+</ul>
 <h3 id="key-visualizations">Key Visualizations</h3>
 <ul>
 <li><strong>Motion graphs</strong>: Show how the angle changes over time</li>
