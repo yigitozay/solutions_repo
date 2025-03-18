@@ -196,7 +196,8 @@ def analyze_pendulum():
 if __name__ == "__main__":
     analyze_pendulum()
 ```
-
+![alt text](image.png)
+![alt text](image-1.png)
 ## 5. Limitations and Extensions
 
 ### Current Limitations
