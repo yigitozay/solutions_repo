@@ -6,13 +6,13 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../../img/favicon.ico" rel="shortcut icon"/>
-<title>Problem 2 - Physics and Mathematics</title>
+<title>Simplified Analysis: Forced Damped Pendulum - Physics and Mathematics</title>
 <link href="../../../css/theme.css" rel="stylesheet"/>
 <link href="../../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "Problem 2";
+        var mkdocs_page_name = "Simplified Analysis: Forced Damped Pendulum";
         var mkdocs_page_input_path = "1 Physics/1 Mechanics/Problem_2.md";
         var mkdocs_page_url = null;
       </script>
@@ -48,8 +48,54 @@
 <ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../Problem_1/">Projectile Motion Analysis: Range vs. Angle of Projection</a>
 </li>
-<li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2</a>
+<li class="toctree-l2 current"><a class="reference internal current" href="#">Simplified Analysis: Forced Damped Pendulum</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#1-theoretical-foundation">1. Theoretical Foundation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#basic-pendulum-model">Basic Pendulum Model</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#resonance">Resonance</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-different-behaviors">2. Different Behaviors</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#effect-of-damping">Effect of Damping</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#effect-of-force-strength">Effect of Force Strength</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#effect-of-force-frequency">Effect of Force Frequency</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#chaos">Chaos</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-real-world-applications">3. Real-World Applications</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#engineering-examples">Engineering Examples</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#similar-systems">Similar Systems</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-computer-simulation">4. Computer Simulation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#key-visualizations">Key Visualizations</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#python-implementation">Python Implementation</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#5-limitations-and-extensions">5. Limitations and Extensions</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#current-limitations">Current Limitations</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#possible-improvements">Possible Improvements</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -163,7 +209,7 @@
 <li><a aria-label="Docs" class="icon icon-home" href="../../.."></a></li>
 <li class="breadcrumb-item">1 Physics</li>
 <li class="breadcrumb-item">1 Mechanics</li>
-<li class="breadcrumb-item active">Problem 2</li>
+<li class="breadcrumb-item active">Simplified Analysis: Forced Damped Pendulum</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -171,7 +217,202 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="problem-2">Problem 2</h1>
+<h1 id="simplified-analysis-forced-damped-pendulum">Simplified Analysis: Forced Damped Pendulum</h1>
+<h2 id="1-theoretical-foundation">1. Theoretical Foundation</h2>
+<h3 id="basic-pendulum-model">Basic Pendulum Model</h3>
+<p>A forced damped pendulum consists of:
+- A mass hanging from a pivot point
+- Damping (friction) that slows the motion
+- An external force pushing the pendulum periodically</p>
+<p>The motion is described by the equation:
+- <span class="arithmatex">\(\frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\sin(\theta) = A\cos(\omega t)\)</span></p>
+<p>Where:
+- <span class="arithmatex">\(\theta\)</span> is the angle from vertical
+- <span class="arithmatex">\(b\)</span> is the damping coefficient (friction)
+- <span class="arithmatex">\(g\)</span> is gravity and <span class="arithmatex">\(L\)</span> is length
+- <span class="arithmatex">\(A\)</span> is the strength of the external force
+- <span class="arithmatex">\(\omega\)</span> is how quickly the external force oscillates</p>
+<p>For small angles, we can simplify by replacing <span class="arithmatex">\(\sin(\theta)\)</span> with <span class="arithmatex">\(\theta\)</span>, making the equation easier to solve.</p>
+<h3 id="resonance">Resonance</h3>
+<p>Resonance occurs when the external force pushes at just the right frequency:
+- Each push adds to the pendulum's motion
+- The amplitude becomes much larger
+- Similar to pushing someone on a swing with the right timing</p>
+<h2 id="2-different-behaviors">2. Different Behaviors</h2>
+<h3 id="effect-of-damping">Effect of Damping</h3>
+<ul>
+<li><strong>Low damping</strong>: Pendulum swings for a long time before stopping</li>
+<li><strong>Medium damping</strong>: Pendulum gradually slows down</li>
+<li><strong>High damping</strong>: Pendulum moves sluggishly and barely oscillates</li>
+</ul>
+<h3 id="effect-of-force-strength">Effect of Force Strength</h3>
+<ul>
+<li><strong>Weak force</strong>: Pendulum follows a simple, predictable path</li>
+<li><strong>Medium force</strong>: More complex motion appears</li>
+<li><strong>Strong force</strong>: Can lead to chaotic motion where the pendulum becomes unpredictable</li>
+</ul>
+<h3 id="effect-of-force-frequency">Effect of Force Frequency</h3>
+<ul>
+<li><strong>Slow frequency</strong>: Pendulum follows the force easily</li>
+<li><strong>Resonant frequency</strong>: Creates largest swings</li>
+<li><strong>Fast frequency</strong>: Pendulum can't keep up, resulting in small movements</li>
+</ul>
+<h3 id="chaos">Chaos</h3>
+<p>When conditions are right, the pendulum can show chaotic behavior:
+- Extremely sensitive to starting conditions
+- Long-term motion becomes unpredictable
+- Small changes lead to completely different patterns
+- Still governed by deterministic physics (not random)</p>
+<h2 id="3-real-world-applications">3. Real-World Applications</h2>
+<h3 id="engineering-examples">Engineering Examples</h3>
+<ul>
+<li><strong>Building stabilizers</strong>: Large pendulums in skyscrapers reduce swaying during earthquakes and strong winds</li>
+<li><strong>Clocks</strong>: Pendulums provide regular timing</li>
+<li><strong>Energy harvesting</strong>: Converting oscillations into electrical energy</li>
+</ul>
+<h3 id="similar-systems">Similar Systems</h3>
+<ul>
+<li><strong>Suspension systems</strong> in vehicles</li>
+<li><strong>Electrical circuits</strong> with inductors, resistors, and capacitors (RLC circuits)</li>
+<li><strong>Musical instruments</strong> like the vibration of strings</li>
+</ul>
+<h2 id="4-computer-simulation">4. Computer Simulation</h2>
+<p>Our Python program simulates the pendulum by:
+- Breaking down the complex motion into small time steps
+- Calculating position and velocity at each step
+- Creating visualizations to understand the behavior</p>
+<h3 id="key-visualizations">Key Visualizations</h3>
+<ul>
+<li><strong>Motion graphs</strong>: Show how the angle changes over time</li>
+<li><strong>Phase diagrams</strong>: Plot angle vs. speed to reveal patterns</li>
+<li><strong>Poincaré sections</strong>: Take "snapshots" of the system at regular intervals to detect chaos</li>
+</ul>
+<h3 id="python-implementation">Python Implementation</h3>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+
+# Pendulum differential equation
+def pendulum_ode(t, state, b, g, L, A, omega):
+    """
+    state[0] = angle (theta)
+    state[1] = angular velocity (omega)
+    """
+    theta, theta_dot = state
+    theta_double_dot = A * np.cos(omega * t) - b * theta_dot - (g / L) * np.sin(theta)
+    return [theta_dot, theta_double_dot]
+
+# Simulation function
+def simulate_pendulum(b, A, omega, initial_angle=0.5, time=50):
+    """Simulate pendulum with given parameters"""
+    g, L = 9.81, 1.0  # Fixed gravity and length
+
+    # Solve the differential equation
+    solution = solve_ivp(
+        lambda t, y: pendulum_ode(t, y, b, g, L, A, omega),
+        (0, time),
+        [initial_angle, 0],  # Initial angle and zero velocity
+        t_eval=np.linspace(0, time, 1000)
+    )
+
+    return solution
+
+# Main function to create all plots
+def analyze_pendulum():
+    # Create figure with three plots
+    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+    # 1. Compare different damping values
+    damping_values = [0.05, 0.5, 2.0]
+    labels = ["Low Damping", "Medium Damping", "High Damping"]
+    omega = 2.0  # Fixed driving frequency
+
+    for b, label in zip(damping_values, labels):
+        sol = simulate_pendulum(b=b, A=0.5, omega=omega)
+        axes[0, 0].plot(sol.t, sol.y[0], label=label)
+
+    axes[0, 0].set_title("Effect of Damping")
+    axes[0, 0].set_xlabel("Time")
+    axes[0, 0].set_ylabel("Angle")
+    axes[0, 0].legend()
+    axes[0, 0].grid(True)
+
+    # 2. Compare different forcing frequencies
+    b = 0.2  # Fixed damping
+    natural_freq = np.sqrt(9.81/1.0)  # Natural frequency = sqrt(g/L)
+    frequency_ratios = [0.5, 1.0, 1.5]
+    labels = ["Below Resonance", "At Resonance", "Above Resonance"]
+
+    for ratio, label in zip(frequency_ratios, labels):
+        omega = ratio * natural_freq
+        sol = simulate_pendulum(b=b, A=0.5, omega=omega)
+        axes[0, 1].plot(sol.t, sol.y[0], label=label)
+
+    axes[0, 1].set_title("Effect of Driving Frequency")
+    axes[0, 1].set_xlabel("Time")
+    axes[0, 1].set_ylabel("Angle")
+    axes[0, 1].legend()
+    axes[0, 1].grid(True)
+
+    # 3. Regular vs chaotic motion
+    # Regular motion
+    sol_regular = simulate_pendulum(b=0.2, A=0.3, omega=0.8*natural_freq)
+
+    # Chaotic motion
+    sol_chaotic = simulate_pendulum(b=0.2, A=1.5, omega=2/3*natural_freq, time=100)
+
+    # Plot regular motion
+    axes[1, 0].plot(sol_regular.t, sol_regular.y[0])
+    axes[1, 0].set_title("Regular Motion")
+    axes[1, 0].set_xlabel("Time")
+    axes[1, 0].set_ylabel("Angle")
+    axes[1, 0].grid(True)
+
+    # Plot chaotic motion
+    axes[1, 1].plot(sol_chaotic.t, sol_chaotic.y[0])
+    axes[1, 1].set_title("Chaotic Motion")
+    axes[1, 1].set_xlabel("Time")
+    axes[1, 1].set_ylabel("Angle")
+    axes[1, 1].grid(True)
+
+    plt.tight_layout()
+    plt.savefig('pendulum_analysis.png', dpi=300)
+    plt.show()
+
+    # 4. Bonus: Phase portrait for chaotic motion
+    plt.figure(figsize=(8, 8))
+    plt.plot(sol_chaotic.y[0], sol_chaotic.y[1])
+    plt.title("Phase Portrait - Chaotic Motion")
+    plt.xlabel("Angle")
+    plt.ylabel("Angular Velocity")
+    plt.grid(True)
+    plt.savefig('phase_portrait.png', dpi=300)
+    plt.show()
+
+if __name__ == "__main__":
+    analyze_pendulum()
+</code></pre>
+<h2 id="5-limitations-and-extensions">5. Limitations and Extensions</h2>
+<h3 id="current-limitations">Current Limitations</h3>
+<ul>
+<li>Assumes idealized damping (proportional to velocity)</li>
+<li>Doesn't account for air resistance at high speeds</li>
+<li>Assumes perfect, consistent external force</li>
+</ul>
+<h3 id="possible-improvements">Possible Improvements</h3>
+<ul>
+<li>Add more realistic friction models</li>
+<li>Include different types of external forces (not just cosine waves)</li>
+<li>Study coupled pendulums that affect each other</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<p>The forced damped pendulum shows how a simple system can exhibit remarkable behaviors:</p>
+<ul>
+<li>Simple harmonic motion with small forces</li>
+<li>Resonance when frequency matches natural motion</li>
+<li>Chaos with strong forces and the right conditions</li>
+</ul>
+<p>By changing parameters like damping, force strength, and frequency, we observe a wide range of behaviors that help us understand many physical systems.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
