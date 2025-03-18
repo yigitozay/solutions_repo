@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Forced Damped Pendulum Simulation</title>
+  <style>
+    body { margin: 0; padding: 0; background: #f0f0f0; }
+    #canvas { display: block; margin: 20px auto; background: #fff; border: 1px solid #ccc; }
+    .controls { text-align: center; margin: 10px; }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <div class="controls">
+    <button onclick="resetSimulation()">Reset Simulation</button>
+  </div>
+  <script>
+    // Simulation parameters
+    const g = 9.81;          // gravitational acceleration (m/s²)
+    const L = 1.0;           // pendulum length (m)
+    let b = 0.5;             // damping coefficient
+    let A = 1.0;             // driving force amplitude
+    let driveOmega = 2.0;    // driving frequency (rad/s)
+    const scale = 200;       // scale factor: pixels per meter
+
+    // Canvas setup
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // Initial state and time
+    let t = 0;
+    const dt = 0.02;  // time step (s)
+    let state = { theta: 0.5, thetaDot: 0 }; // initial conditions: angle (rad) and angular velocity (rad/s)
+
+    // Compute the derivatives for the pendulum ODE:
+    // dθ/dt = θ̇
+    // dθ̇/dt = A*cos(driveOmega * t) - b*θ̇ - (g/L)*sin(θ)
+    function derivatives(time, state) {
+      return {
+        dtheta: state.thetaDot,
+        dthetaDot: A * Math.cos(driveOmega * time) - b * state.thetaDot - (g / L) * Math.sin(state.theta)
+      };
+    }
+
+    // RK4 integration step
+    function rk4Step(time, state, dt) {
+      const k1 = derivatives(time, state);
+      const state2 = {
+        theta: state.theta + k1.dtheta * dt / 2,
+        thetaDot: state.thetaDot + k1.dthetaDot * dt / 2
+      };
+      const k2 = derivatives(time + dt / 2, state2);
+      const state3 = {
+        theta: state.theta + k2.dtheta * dt / 2,
+        thetaDot: state.thetaDot + k2.dthetaDot * dt / 2
+      };
+      const k3 = derivatives(time + dt / 2, state3);
+      const state4 = {
+        theta: state.theta + k3.dtheta * dt,
+        thetaDot: state.thetaDot + k3.dthetaDot * dt
+      };
+      const k4 = derivatives(time + dt, state4);
+
+      return {
+        theta: state.theta + (dt / 6) * (k1.dtheta + 2 * k2.dtheta + 2 * k3.dtheta + k4.dtheta),
+        thetaDot: state.thetaDot + (dt / 6) * (k1.dthetaDot + 2 * k2.dthetaDot + 2 * k3.dthetaDot + k4.dthetaDot)
+      };
+    }
+
+    // Update simulation state
+    function update() {
+      state = rk4Step(t, state, dt);
+      t += dt;
+    }
+
+    // Draw the pendulum on the canvas
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Define the pivot point
+      const pivotX = canvas.width / 2;
+      const pivotY = 100;
+
+      // Calculate the bob position (angle measured from vertical)
+      const bobX = pivotX + L * scale * Math.sin(state.theta);
+      const bobY = pivotY + L * scale * Math.cos(state.theta);
+
+      // Draw the arm
+      ctx.beginPath();
+      ctx.moveTo(pivotX, pivotY);
+      ctx.lineTo(bobX, bobY);
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Draw the bob
+      ctx.beginPath();
+      ctx.arc(bobX, bobY, 20, 0, 2 * Math.PI);
+      ctx.fillStyle = "#0077cc";
+      ctx.fill();
+      ctx.stroke();
+
+      // Display the simulation time
+      ctx.fillStyle = "#000";
+      ctx.font = "16px Arial";
+      ctx.fillText("Time: " + t.toFixed(2) + " s", 10, 30);
+    }
+
+    // Main animation loop using requestAnimationFrame
+    function animate() {
+      update();
+      draw();
+      requestAnimationFrame(animate);
+    }
+
+    // Reset simulation to initial state
+    function resetSimulation() {
+      t = 0;
+      state = { theta: 0.5, thetaDot: 0 };
+    }
+
+    // Start the simulation
+    animate();
+  </script>
+</body>
+</html>
