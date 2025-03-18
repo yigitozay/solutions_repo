@@ -5,14 +5,17 @@
 ### Basic Pendulum Model
 
 A forced damped pendulum consists of:
+
 - A mass hanging from a pivot point
 - Damping (friction) that slows the motion
 - An external force pushing the pendulum periodically
 
 The motion is described by the equation:
-- $\frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\sin(\theta) = A\cos(\omega t)$
+
+$$\frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\sin(\theta) = A\cos(\omega t)$$
 
 Where:
+
 - $\theta$ is the angle from vertical
 - $b$ is the damping coefficient (friction)
 - $g$ is gravity and $L$ is length
@@ -24,6 +27,7 @@ For small angles, we can simplify by replacing $\sin(\theta)$ with $\theta$, mak
 ### Resonance
 
 Resonance occurs when the external force pushes at just the right frequency:
+
 - Each push adds to the pendulum's motion
 - The amplitude becomes much larger
 - Similar to pushing someone on a swing with the right timing
@@ -51,6 +55,7 @@ Resonance occurs when the external force pushes at just the right frequency:
 ### Chaos
 
 When conditions are right, the pendulum can show chaotic behavior:
+
 - Extremely sensitive to starting conditions
 - Long-term motion becomes unpredictable
 - Small changes lead to completely different patterns
@@ -73,6 +78,7 @@ When conditions are right, the pendulum can show chaotic behavior:
 ## 4. Computer Simulation
 
 Our Python program simulates the pendulum by:
+
 - Breaking down the complex motion into small time steps
 - Calculating position and velocity at each step
 - Creating visualizations to understand the behavior
