@@ -1,4 +1,4 @@
-# Simplified Analysis: Forced Damped Pendulum
+# Forced Damped Pendulum
 
 ## 1. Theoretical Foundation
 

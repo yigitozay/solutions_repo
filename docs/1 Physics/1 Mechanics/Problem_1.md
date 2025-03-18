@@ -342,3 +342,9 @@ if __name__ == "__main__":
     
     print("\nAnalysis complete! All graphs have been generated.")
 ```
+
+![alt text](image-2.png)
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
