@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Kepler's Third Law Simulation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      text-align: center;
+      margin: 20px;
+    }
+    .controls {
+      margin-bottom: 20px;
+    }
+    .controls label {
+      margin: 0 10px;
+    }
+    canvas {
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+    #info {
+      margin: 10px;
+      font-size: 16px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kepler's Third Law Simulation</h1>
+  <div class="controls">
+    <label>
+      Central Mass (kg):
+      <input type="number" id="centralMass" value="5.972e24" step="1e22">
+    </label>
+    <label>
+      Orbital Radius (m):
+      <input type="number" id="orbitalRadius" value="7000000" step="100000">
+    </label>
+    <label>
+      Simulation Speed:
+      <input type="number" id="simSpeed" value="1000" step="10">
+    </label>
+    <br><br>
+    <button onclick="updateSimulation()">Update Simulation</button>
+    <button onclick="resetSimulation()">Reset Simulation</button>
+  </div>
+  
+  <div id="info"></div>
+  <canvas id="orbitCanvas" width="600" height="600"></canvas>
+  
+  <script>
+    // Gravitational constant (m³ kg⁻¹ s⁻²)
+    const G = 6.67430e-11;
+
+    // Simulation parameters (read from input fields)
+    let centralMass = parseFloat(document.getElementById("centralMass").value);
+    let orbitalRadius = parseFloat(document.getElementById("orbitalRadius").value);
+    let simSpeed = parseFloat(document.getElementById("simSpeed").value);
+    
+    // Computed parameters
+    let orbitalPeriod = 0; // in seconds
+    let omega = 0;         // angular velocity (rad/s)
+    let angle = 0;         // current angle of the orbiting body
+
+    // Timing for the animation
+    let lastTime = null;
+    
+    // Canvas setup
+    const canvas = document.getElementById("orbitCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Update simulation parameters from input fields
+    function updateParameters() {
+      centralMass = parseFloat(document.getElementById("centralMass").value);
+      orbitalRadius = parseFloat(document.getElementById("orbitalRadius").value);
+      simSpeed = parseFloat(document.getElementById("simSpeed").value);
+      
+      // Calculate the orbital period using Kepler's Third Law:
+      // T = 2π √(r³ / (G*M))
+      orbitalPeriod = 2 * Math.PI * Math.sqrt(Math.pow(orbitalRadius, 3) / (G * centralMass));
+      // Angular velocity ω = 2π / T
+      omega = 2 * Math.PI / orbitalPeriod;
+      
+      // Update displayed information
+      document.getElementById("info").innerHTML = 
+        "Orbital Period: " + orbitalPeriod.toExponential(3) + " s<br>" +
+        "Angular Velocity: " + omega.toExponential(3) + " rad/s";
+    }
+    
+    // Reset the simulation state (restart orbit)
+    function resetSimulation() {
+      angle = 0;
+      lastTime = null;
+    }
+    
+    // Update simulation: re-read parameters and reset simulation state
+    function updateSimulation() {
+      updateParameters();
+      resetSimulation();
+    }
+    
+    // Animation loop using requestAnimationFrame
+    function animate(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const dt = (timestamp - lastTime) / 1000; // dt in seconds
+      lastTime = timestamp;
+      
+      // Advance the angle using the angular velocity and simulation speed multiplier
+      angle += omega * dt * simSpeed;
+      // Wrap angle to remain within 0 to 2π
+      angle %= 2 * Math.PI;
+      
+      draw();
+      requestAnimationFrame(animate);
+    }
+    
+    // Draw the central body, orbit path, and the orbiting satellite
+    function draw() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Determine canvas center
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      
+      // Compute a scale factor so that the entire orbit fits in the canvas
+      const margin = 50;
+      const scale = (canvas.width / 2 - margin) / orbitalRadius;
+      
+      // Draw the orbit (circle)
+      ctx.beginPath();
+      ctx.arc(cx, cy, orbitalRadius * scale, 0, 2 * Math.PI);
+      ctx.strokeStyle = "gray";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      
+      // Draw the central body (e.g., the Sun) as a yellow circle
+      ctx.beginPath();
+      ctx.arc(cx, cy, 10, 0, 2 * Math.PI);
+      ctx.fillStyle = "yellow";
+      ctx.fill();
+      ctx.stroke();
+      
+      // Calculate the position of the orbiting body using circular motion
+      const x = cx + orbitalRadius * scale * Math.cos(angle);
+      const y = cy + orbitalRadius * scale * Math.sin(angle);
+      
+      // Draw the orbiting body as a blue circle
+      ctx.beginPath();
+      ctx.arc(x, y, 8, 0, 2 * Math.PI);
+      ctx.fillStyle = "blue";
+      ctx.fill();
+      ctx.stroke();
+      
+      // Optionally, display the current angle (in degrees) at the top left
+      ctx.fillStyle = "black";
+      ctx.font = "16px Arial";
+      ctx.fillText("Angle: " + (angle * 180 / Math.PI).toFixed(2) + "°", 10, 20);
+    }
+    
+    // Initialize simulation and start animation on page load
+    updateParameters();
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
