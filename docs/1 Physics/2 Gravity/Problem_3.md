@@ -365,6 +365,50 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+=== Payload Trajectory Analysis ===
+
+Analyzing different trajectory types...
+Escape velocity at 300.0 km altitude: 10.93 km/s
+
+Trajectory Analysis Results:
+
+Low Elliptical (0.6 v_esc):
+  Orbit Type: Elliptical
+  Apogee (km): 300.00
+  Perigee (km): -0.00
+  Period (min): 62.41
+  Velocity (km/s): 6.56
+
+High Elliptical (0.8 v_esc):
+  Orbit Type: Elliptical
+  Apogee (km): 5488.55
+  Perigee (km): 300.00
+  Period (min): 147.93
+  Velocity (km/s): 8.75
+
+Near-Circular:
+  Orbit Type: Elliptical
+  Apogee (km): 300.00
+  Perigee (km): 300.00
+  Period (min): 90.37
+  Velocity (km/s): 7.73
+
+Parabolic (1.0 v_esc):
+  Orbit Type: Parabolic
+  Excess Velocity (km/s): 0.00
+  Velocity (km/s): 10.93
+
+Hyperbolic (1.2 v_esc):
+  Orbit Type: Hyperbolic
+  Excess Velocity (km/s): 2.19
+  Velocity (km/s): 13.12
+
+Highly Hyperbolic (1.5 v_esc):
+  Orbit Type: Hyperbolic
+  Excess Velocity (km/s): 5.47
+  Velocity (km/s): 16.40
+  
 ![alt text](image-8.png)
 ![alt text](image-7.png)
 ![alt text](image-6.png)
