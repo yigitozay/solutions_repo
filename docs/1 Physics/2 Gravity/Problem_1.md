@@ -185,6 +185,7 @@ Where $M_1$ and $M_2$ are the masses of the two stars and $a$ is the semi-major 
 ## 5. Computational Analysis
 
 In the accompanying Python simulation, we demonstrate:
+
 1. Visualization of circular orbits for various orbital radii
 2. Verification of the $T^2 \propto r^3$ relationship
 3. Application to real planetary data
