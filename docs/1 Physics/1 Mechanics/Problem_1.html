@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Projectile Motion Simulation: Range vs. Angle</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      margin: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .controls label {
+      margin: 0 10px;
+    }
+    .controls input {
+      width: 60px;
+    }
+    canvas {
+      display: block;
+      margin: 20px auto;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+  </style>
+  <!-- Include Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Projectile Motion Simulation</h1>
+  <div class="controls">
+    <label>Initial Velocity (m/s):
+      <input type="number" id="velocity" value="20" step="1">
+    </label>
+    <label>Launch Angle (°):
+      <input type="number" id="launchAngle" value="45" step="1">
+    </label>
+    <label>Gravity (m/s²):
+      <input type="number" id="gravity" value="9.81" step="0.1">
+    </label>
+    <button onclick="resetSimulation()">Reset Simulation</button>
+    <button onclick="updateChart()">Update Range Chart</button>
+  </div>
+  <!-- Canvas for the projectile simulation -->
+  <canvas id="projectileCanvas" width="800" height="400"></canvas>
+  
+  <h2>Range vs. Launch Angle</h2>
+  <!-- Canvas for the Chart.js graph -->
+  <canvas id="rangeChart" width="800" height="400"></canvas>
+  
+  <script>
+    // ----------------------------
+    // Projectile Simulation Section
+    // ----------------------------
+    
+    // Read initial parameters from the controls
+    let velocity = parseFloat(document.getElementById("velocity").value);
+    let launchAngle = parseFloat(document.getElementById("launchAngle").value); // in degrees
+    let gravity = parseFloat(document.getElementById("gravity").value);
+    
+    const dt = 0.02;    // time step in seconds
+    let t = 0;          // simulation time
+    let simulationRunning = false;
+    
+    // Projectile state (using simulation coordinates: x horizontal, y vertical; y=0 is ground)
+    let projectile = { x: 0, y: 0, vx: 0, vy: 0 };
+    
+    // Drawing settings for simulation canvas
+    const scale = 10;      // pixels per meter
+    const offsetX = 50;    // left margin in pixels
+    const offsetY = 50;    // bottom margin in pixels
+    
+    // Get canvas and context for simulation
+    const canvas = document.getElementById("projectileCanvas");
+    const ctx = canvas.getContext("2d");
+    
+    // Initialize projectile state based on input parameters
+    function initializeProjectile() {
+      t = 0;
+      projectile.x = 0;
+      projectile.y = 0;
+      let rad = launchAngle * Math.PI / 180;
+      projectile.vx = velocity * Math.cos(rad);
+      projectile.vy = velocity * Math.sin(rad);
+    }
+    
+    // Update the projectile state using basic kinematics
+    function updateProjectile() {
+      t += dt;
+      projectile.x += projectile.vx * dt;
+      // Update vertical velocity with gravity and then vertical position:
+      projectile.vy -= gravity * dt;
+      projectile.y += projectile.vy * dt;
+    }
+    
+    // Convert simulation coordinates to canvas coordinates
+    function toCanvasX(x) {
+      return offsetX + x * scale;
+    }
+    function toCanvasY(y) {
+      // In simulation, y=0 is ground. In canvas, y increases downward.
+      return canvas.height - offsetY - y * scale;
+    }
+    
+    // Draw the simulation (projectile path and ground)
+    function drawProjectile() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw the ground line
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height - offsetY);
+      ctx.lineTo(canvas.width, canvas.height - offsetY);
+      ctx.strokeStyle = "green";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      
+      // Draw the projectile as a small circle
+      let x = toCanvasX(projectile.x);
+      let y = toCanvasY(projectile.y);
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = "red";
+      ctx.fill();
+    }
+    
+    // Main simulation loop (using requestAnimationFrame)
+    function simulate() {
+      if (!simulationRunning) return;
+      updateProjectile();
+      drawProjectile();
+      // Stop simulation if the projectile falls below ground level (y < 0)
+      if (projectile.y < 0 && t > dt) {
+        simulationRunning = false;
+      }
+      requestAnimationFrame(simulate);
+    }
+    
+    // Reset the simulation (reads new parameters and restarts)
+    function resetSimulation() {
+      // Update parameters from input fields
+      velocity = parseFloat(document.getElementById("velocity").value);
+      launchAngle = parseFloat(document.getElementById("launchAngle").value);
+      gravity = parseFloat(document.getElementById("gravity").value);
+      simulationRunning = true;
+      initializeProjectile();
+      simulate();
+    }
+    
+    
+    // ----------------------------
+    // Range vs. Angle Chart Section
+    // ----------------------------
+    
+    let rangeChart;
+    
+    // Update the Range vs. Angle chart using Chart.js
+    function updateChart() {
+      // Use current velocity and gravity from the input fields
+      let v = parseFloat(document.getElementById("velocity").value);
+      let g = parseFloat(document.getElementById("gravity").value);
+      let angles = [];
+      let ranges = [];
+      
+      // Calculate range for angles from 0° to 90°
+      for (let angle = 0; angle <= 90; angle++) {
+        angles.push(angle);
+        let rad = angle * Math.PI / 180;
+        // Range formula: R = (v^2 * sin(2θ)) / g
+        let R = (v * v * Math.sin(2 * rad)) / g;
+        ranges.push(R);
+      }
+      
+      // If the chart already exists, update it; otherwise, create a new one.
+      if (rangeChart) {
+        rangeChart.data.labels = angles;
+        rangeChart.data.datasets[0].data = ranges;
+        rangeChart.options.plugins.title.text = `Range vs Angle (v₀ = ${v} m/s, g = ${g} m/s²)`;
+        rangeChart.update();
+      } else {
+        const ctxChart = document.getElementById("rangeChart").getContext("2d");
+        rangeChart = new Chart(ctxChart, {
+          type: 'line',
+          data: {
+            labels: angles,
+            datasets: [{
+              label: 'Range (m)',
+              data: ranges,
+              borderColor: 'blue',
+              fill: false,
+              tension: 0.1
+            }]
+          },
+          options: {
+            scales: {
+              x: {
+                title: { display: true, text: 'Launch Angle (°)' }
+              },
+              y: {
+                title: { display: true, text: 'Range (m)' }
+              }
+            },
+            plugins: {
+              title: {
+                display: true,
+                text: `Range vs Angle (v₀ = ${v} m/s, g = ${g} m/s²)`
+              }
+            }
+          }
+        });
+      }
+    }
+    
+    // Initialize simulation and chart on page load
+    window.onload = function() {
+      resetSimulation();
+      updateChart();
+    }
+  </script>
+</body>
+</html>

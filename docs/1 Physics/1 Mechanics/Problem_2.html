@@ -2,47 +2,121 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Forced Damped Pendulum Simulation</title>
+  <title>Interactive Forced Damped Pendulum Simulation</title>
   <style>
-    body { margin: 0; padding: 0; background: #f0f0f0; }
-    #canvas { display: block; margin: 20px auto; background: #fff; border: 1px solid #ccc; }
-    .controls { text-align: center; margin: 10px; }
+    body { 
+      margin: 0; 
+      padding: 0; 
+      background: #f0f0f0; 
+      font-family: Arial, sans-serif; 
+      text-align: center;
+    }
+    canvas {
+      background: #fff; 
+      border: 1px solid #ccc; 
+      display: block; 
+      margin: 20px auto;
+    }
+    .controls {
+      margin: 10px;
+    }
+    .controls label {
+      margin: 0 10px;
+    }
+    .controls input {
+      width: 70px;
+    }
   </style>
+  <!-- Include Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <canvas id="canvas" width="800" height="600"></canvas>
+  <h1>Forced Damped Pendulum Simulation</h1>
+  <!-- Simulation Canvas -->
+  <canvas id="simCanvas" width="800" height="600"></canvas>
+  
+  <!-- Controls -->
   <div class="controls">
+    <label>Damping (b): <input type="number" id="damping" value="0.5" step="0.1"></label>
+    <label>Force Amplitude (A): <input type="number" id="amplitude" value="1.0" step="0.1"></label>
+    <label>Driving Freq. (ω): <input type="number" id="driveOmega" value="2.0" step="0.1"></label>
+    <br><br>
+    <button onclick="updateParameters()">Update Parameters</button>
     <button onclick="resetSimulation()">Reset Simulation</button>
   </div>
+  
+  <!-- Chart Canvas -->
+  <h2>Angle vs. Time</h2>
+  <canvas id="chartCanvas" width="800" height="300"></canvas>
+  
   <script>
-    // Simulation parameters
-    const g = 9.81;          // gravitational acceleration (m/s²)
-    const L = 1.0;           // pendulum length (m)
-    let b = 0.5;             // damping coefficient
-    let A = 1.0;             // driving force amplitude
-    let driveOmega = 2.0;    // driving frequency (rad/s)
-    const scale = 200;       // scale factor: pixels per meter
-
-    // Canvas setup
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-
-    // Initial state and time
-    let t = 0;
-    const dt = 0.02;  // time step (s)
-    let state = { theta: 0.5, thetaDot: 0 }; // initial conditions: angle (rad) and angular velocity (rad/s)
-
-    // Compute the derivatives for the pendulum ODE:
-    // dθ/dt = θ̇
-    // dθ̇/dt = A*cos(driveOmega * t) - b*θ̇ - (g/L)*sin(θ)
+    // ---- Simulation Constants and Parameters ----
+    const g = 9.81;         // gravitational acceleration (m/s²)
+    const L = 1.0;          // pendulum length (m)
+    let b = parseFloat(document.getElementById("damping").value);      // damping coefficient
+    let A = parseFloat(document.getElementById("amplitude").value);      // forcing amplitude
+    let driveOmega = parseFloat(document.getElementById("driveOmega").value); // driving frequency (rad/s)
+    
+    // Simulation state variables
+    let t = 0;                        // simulation time in seconds
+    const dt = 0.02;                  // time step (s)
+    let state = { theta: 0.5, thetaDot: 0 };  // initial conditions: angle (rad) and angular velocity (rad/s)
+    
+    // For charting angle vs time
+    let timeData = [];
+    let angleData = [];
+    const maxDataPoints = 500;        // Limit data points to keep chart responsive
+    
+    // ---- Canvas Setup for Simulation ----
+    const simCanvas = document.getElementById("simCanvas");
+    const simCtx = simCanvas.getContext("2d");
+    
+    // Pivot point for the pendulum (placed near top-center)
+    const pivotX = simCanvas.width / 2;
+    const pivotY = 100;
+    const simScale = 200;  // pixels per meter
+    
+    // ---- Chart.js Setup ----
+    const chartCtx = document.getElementById("chartCanvas").getContext("2d");
+    let angleChart = new Chart(chartCtx, {
+      type: 'line',
+      data: {
+        labels: timeData,
+        datasets: [{
+          label: 'Pendulum Angle (rad)',
+          data: angleData,
+          borderColor: 'blue',
+          fill: false,
+          tension: 0.1
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            title: { display: true, text: 'Time (s)' }
+          },
+          y: {
+            title: { display: true, text: 'Angle (rad)' }
+          }
+        },
+        plugins: {
+          title: {
+            display: true,
+            text: 'Pendulum Angle vs. Time'
+          }
+        }
+      }
+    });
+    
+    // ---- Numerical Integration (RK4) ----
+    // ODE: dθ/dt = θ̇, dθ̇/dt = A*cos(ω*t) - b*θ̇ - (g/L)*sin(θ)
     function derivatives(time, state) {
       return {
         dtheta: state.thetaDot,
         dthetaDot: A * Math.cos(driveOmega * time) - b * state.thetaDot - (g / L) * Math.sin(state.theta)
       };
     }
-
-    // RK4 integration step
+    
     function rk4Step(time, state, dt) {
       const k1 = derivatives(time, state);
       const state2 = {
@@ -60,67 +134,95 @@
         thetaDot: state.thetaDot + k3.dthetaDot * dt
       };
       const k4 = derivatives(time + dt, state4);
-
+      
       return {
-        theta: state.theta + (dt / 6) * (k1.dtheta + 2 * k2.dtheta + 2 * k3.dtheta + k4.dtheta),
-        thetaDot: state.thetaDot + (dt / 6) * (k1.dthetaDot + 2 * k2.dthetaDot + 2 * k3.dthetaDot + k4.dthetaDot)
+        theta: state.theta + (dt / 6) * (k1.dtheta + 2*k2.dtheta + 2*k3.dtheta + k4.dtheta),
+        thetaDot: state.thetaDot + (dt / 6) * (k1.dthetaDot + 2*k2.dthetaDot + 2*k3.dthetaDot + k4.dthetaDot)
       };
     }
-
-    // Update simulation state
-    function update() {
+    
+    // ---- Simulation Update and Drawing ----
+    function updateSimulation() {
+      // Update state using RK4 integration
       state = rk4Step(t, state, dt);
       t += dt;
+      
+      // Save data for charting (limit number of points)
+      timeData.push(t.toFixed(2));
+      angleData.push(state.theta);
+      if (timeData.length > maxDataPoints) {
+        timeData.shift();
+        angleData.shift();
+      }
+      angleChart.update();
     }
-
-    // Draw the pendulum on the canvas
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Define the pivot point
-      const pivotX = canvas.width / 2;
-      const pivotY = 100;
-
-      // Calculate the bob position (angle measured from vertical)
-      const bobX = pivotX + L * scale * Math.sin(state.theta);
-      const bobY = pivotY + L * scale * Math.cos(state.theta);
-
-      // Draw the arm
-      ctx.beginPath();
-      ctx.moveTo(pivotX, pivotY);
-      ctx.lineTo(bobX, bobY);
-      ctx.strokeStyle = "#000";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // Draw the bob
-      ctx.beginPath();
-      ctx.arc(bobX, bobY, 20, 0, 2 * Math.PI);
-      ctx.fillStyle = "#0077cc";
-      ctx.fill();
-      ctx.stroke();
-
-      // Display the simulation time
-      ctx.fillStyle = "#000";
-      ctx.font = "16px Arial";
-      ctx.fillText("Time: " + t.toFixed(2) + " s", 10, 30);
+    
+    function drawPendulum() {
+      simCtx.clearRect(0, 0, simCanvas.width, simCanvas.height);
+      
+      // Draw pivot point
+      simCtx.beginPath();
+      simCtx.arc(pivotX, pivotY, 8, 0, 2*Math.PI);
+      simCtx.fillStyle = "black";
+      simCtx.fill();
+      
+      // Calculate bob position
+      const bobX = pivotX + L * simScale * Math.sin(state.theta);
+      const bobY = pivotY + L * simScale * Math.cos(state.theta);
+      
+      // Draw pendulum arm
+      simCtx.beginPath();
+      simCtx.moveTo(pivotX, pivotY);
+      simCtx.lineTo(bobX, bobY);
+      simCtx.strokeStyle = "#000";
+      simCtx.lineWidth = 3;
+      simCtx.stroke();
+      
+      // Draw pendulum bob
+      simCtx.beginPath();
+      simCtx.arc(bobX, bobY, 20, 0, 2*Math.PI);
+      simCtx.fillStyle = "#0077cc";
+      simCtx.fill();
+      simCtx.stroke();
+      
+      // Display current simulation time and angle
+      simCtx.fillStyle = "#000";
+      simCtx.font = "16px Arial";
+      simCtx.fillText("Time: " + t.toFixed(2) + " s", 10, 30);
+      simCtx.fillText("Angle: " + state.theta.toFixed(3) + " rad", 10, 50);
     }
-
-    // Main animation loop using requestAnimationFrame
+    
+    // ---- Main Animation Loop ----
     function animate() {
-      update();
-      draw();
+      updateSimulation();
+      drawPendulum();
       requestAnimationFrame(animate);
     }
-
-    // Reset simulation to initial state
+    
+    // ---- Control Functions ----
+    function updateParameters() {
+      // Read new parameter values
+      b = parseFloat(document.getElementById("damping").value);
+      A = parseFloat(document.getElementById("amplitude").value);
+      driveOmega = parseFloat(document.getElementById("driveOmega").value);
+      // Optionally, you might want to update other parameters or restart the simulation
+      resetSimulation();
+    }
+    
     function resetSimulation() {
+      // Reset simulation time, state, and chart data
       t = 0;
       state = { theta: 0.5, thetaDot: 0 };
+      timeData.length = 0;
+      angleData.length = 0;
+      angleChart.update();
     }
-
-    // Start the simulation
-    animate();
+    
+    // ---- Start the Simulation on Page Load ----
+    window.onload = function() {
+      resetSimulation();
+      animate();
+    }
   </script>
 </body>
 </html>
