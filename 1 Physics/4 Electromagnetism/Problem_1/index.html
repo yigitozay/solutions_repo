@@ -6,13 +6,13 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../../img/favicon.ico" rel="shortcut icon"/>
-<title>Problem 1 - Physics and Mathematics</title>
+<title>Simulating the Effects of the Lorentz Force - Physics and Mathematics</title>
 <link href="../../../css/theme.css" rel="stylesheet"/>
 <link href="../../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "Problem 1";
+        var mkdocs_page_name = "Simulating the Effects of the Lorentz Force";
         var mkdocs_page_input_path = "1 Physics/4 Electromagnetism/Problem_1.md";
         var mkdocs_page_url = null;
       </script>
@@ -70,8 +70,40 @@
 </li>
 <li class="toctree-l1 current"><a class="reference internal current">4 Electromagnetism</a>
 <ul class="current">
-<li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
+<li class="toctree-l2 current"><a class="reference internal current" href="#">Simulating the Effects of the Lorentz Force</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#theory-and-background">Theory and Background</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#lorentz-force">Lorentz Force</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exploration-of-applications">Exploration of Applications</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#particle-accelerators">Particle Accelerators</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#mass-spectrometry">Mass Spectrometry</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#plasma-confinement">Plasma Confinement</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#simulations">Simulations</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#comprehensive-python-implementation">Comprehensive Python Implementation</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parameter-exploration">Parameter Exploration</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#visualization">Visualization</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#extensions">Extensions</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -163,7 +195,7 @@
 <li><a aria-label="Docs" class="icon icon-home" href="../../.."></a></li>
 <li class="breadcrumb-item">1 Physics</li>
 <li class="breadcrumb-item">4 Electromagnetism</li>
-<li class="breadcrumb-item active">Problem 1</li>
+<li class="breadcrumb-item active">Simulating the Effects of the Lorentz Force</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -171,7 +203,111 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="problem-1">Problem 1</h1>
+<h1 id="simulating-the-effects-of-the-lorentz-force">Simulating the Effects of the Lorentz Force</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The Lorentz force governs the interaction of charged particles with electric and magnetic fields, described mathematically as:</p>
+<div class="arithmatex">\[ \mathbf{F} = q\mathbf{E} + q\mathbf{v} \times \mathbf{B} \]</div>
+<p>Understanding this force is essential in various fields such as particle physics, astrophysics, and engineering technologies like particle accelerators and plasma confinement systems. This simulation project extensively explores the behavior of charged particles under different electromagnetic field conditions.</p>
+<h2 id="theory-and-background">Theory and Background</h2>
+<h3 id="lorentz-force">Lorentz Force</h3>
+<p>The Lorentz force consists of:</p>
+<ul>
+<li><strong>Electric force (<span class="arithmatex">\(q\mathbf{E}\)</span>)</strong>: Acts in the direction of the electric field, changing particle velocity magnitude.</li>
+<li><strong>Magnetic force (<span class="arithmatex">\(q\mathbf{v}\times \mathbf{B}\)</span>)</strong>: Perpendicular to both particle velocity and magnetic field, modifying trajectory direction without changing speed.</li>
+</ul>
+<p>The dynamics of a particle under this force follow Newton's second law:</p>
+<div class="arithmatex">\[ m \frac{d\mathbf{v}}{dt} = q(\mathbf{E} + \mathbf{v}\times \mathbf{B}) \]</div>
+<p>Numerical methods such as the Runge-Kutta method are employed to solve these equations.</p>
+<h2 id="exploration-of-applications">Exploration of Applications</h2>
+<h3 id="particle-accelerators">Particle Accelerators</h3>
+<p>Charged particles are guided by magnetic fields, achieving high speeds through periodic electric field acceleration, essential for experiments in particle physics.</p>
+<h3 id="mass-spectrometry">Mass Spectrometry</h3>
+<p>Magnetic fields differentiate particles based on their mass-to-charge ratios, enabling accurate chemical analyses and isotopic identification.</p>
+<h3 id="plasma-confinement">Plasma Confinement</h3>
+<p>Magnetic confinement in fusion reactors relies heavily on controlling particle trajectories, maintaining stable plasma conditions necessary for fusion.</p>
+<h2 id="simulations">Simulations</h2>
+<h3 id="comprehensive-python-implementation">Comprehensive Python Implementation</h3>
+<p>Here is a robust and clear Python implementation illustrating particle trajectories under varied electromagnetic conditions:</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+
+# Define Lorentz force equations
+def lorentz_force(t, state, q, m, E_func, B_func):
+    pos, vel = state[:3], state[3:]
+    dposdt = vel
+    dveldt = (q/m) * (E_func(pos, t) + np.cross(vel, B_func(pos, t)))
+    return np.concatenate([dposdt, dveldt])
+
+# Field scenarios
+field_scenarios = {
+    'Uniform Magnetic Field': (lambda r, t: np.zeros(3), lambda r, t: np.array([0, 0, 1])),
+    'Combined Fields': (lambda r, t: np.array([0, 1e4, 0]), lambda r, t: np.array([0, 0, 1])),
+    'Crossed Fields': (lambda r, t: np.array([1e4, 0, 0]), lambda r, t: np.array([0, 0, 1]))
+}
+
+# Simulation parameters
+q, m = 1.6e-19, 9.11e-31
+initial_state = np.array([0, 0, 0, 1e6, 1e6, 0])
+t_span, t_eval = (0, 5e-8), np.linspace(0, 5e-8, 5000)
+
+for scenario, (E_func, B_func) in field_scenarios.items():
+    solution = solve_ivp(lorentz_force, t_span, initial_state, args=(q, m, E_func, B_func), t_eval=t_eval)
+
+    fig = plt.figure(figsize=(12, 6))
+
+    # 3D Trajectory
+    ax = fig.add_subplot(121, projection='3d')
+    ax.plot(solution.y[0], solution.y[1], solution.y[2], label=scenario)
+    ax.set_xlabel('X (m)')
+    ax.set_ylabel('Y (m)')
+    ax.set_zlabel('Z (m)')
+    ax.set_title(f'3D Trajectory - {scenario}')
+    ax.legend()
+
+    # 2D Projection
+    ax2 = fig.add_subplot(122)
+    ax2.plot(solution.y[0], solution.y[1])
+    ax2.set_xlabel('X (m)')
+    ax2.set_ylabel('Y (m)')
+    ax2.set_title(f'2D Projection - {scenario}')
+    ax2.grid(True)
+
+    plt.tight_layout()
+    plt.show()
+</code></pre>
+<p><img alt="alt text" src="../image-1.png"/>
+<img alt="alt text" src="../image-2.png"/>
+<img alt="alt text" src="../image-3.png"/></p>
+<h2 id="parameter-exploration">Parameter Exploration</h2>
+<p>Examining how trajectory changes with:</p>
+<ul>
+<li><strong>Electric field magnitude (<span class="arithmatex">\(\mathbf{E}\)</span>)</strong></li>
+<li><strong>Magnetic field strength (<span class="arithmatex">\(\mathbf{B}\)</span>)</strong></li>
+<li><strong>Initial velocity (<span class="arithmatex">\(\mathbf{v}\)</span>)</strong></li>
+<li><strong>Particle charge and mass (<span class="arithmatex">\(q,m\)</span>)</strong></li>
+</ul>
+<p>helps in understanding particle behavior under various real-world conditions.</p>
+<h2 id="visualization">Visualization</h2>
+<ul>
+<li><strong>Circular trajectory</strong>: Observed clearly in uniform magnetic fields.</li>
+<li><strong>Helical trajectory</strong>: Occurs with combined fields.</li>
+<li><strong>Drift trajectory</strong>: Highlighted clearly under crossed fields, showcasing constant drift perpendicular to both fields.</li>
+</ul>
+<p>Visualization clearly demonstrates important physical parameters:</p>
+<ul>
+<li><strong>Larmor Radius</strong>: <span class="arithmatex">\(r_L = \frac{mv}{qB}\)</span></li>
+<li><strong>Drift Velocity</strong>: <span class="arithmatex">\(v_d = \frac{E \times B}{B^2}\)</span></li>
+</ul>
+<h2 id="extensions">Extensions</h2>
+<p>Future simulations may incorporate:</p>
+<ul>
+<li><strong>Non-uniform fields</strong> for realistic plasma containment scenarios.</li>
+<li><strong>Time-varying fields</strong> to simulate dynamic environmental interactions.</li>
+<li><strong>Relativistic dynamics</strong> for high-speed particle simulations.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>This detailed simulation effectively illustrates the fundamental and applied aspects of the Lorentz force, providing significant insights into electromagnetic particle dynamics, supporting theoretical understanding and practical applications.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">

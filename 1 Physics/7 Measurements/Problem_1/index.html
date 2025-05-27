@@ -70,7 +70,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal">4 Electromagnetism</a>
 <ul>
-<li class="toctree-l2"><a class="reference internal" href="../../4%20Electromagnetism/Problem_1/">Problem 1</a>
+<li class="toctree-l2"><a class="reference internal" href="../../4%20Electromagnetism/Problem_1/">Simulating the Effects of the Lorentz Force</a>
 </li>
 </ul>
 </li>
@@ -92,6 +92,36 @@
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#task">Task</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#procedure">Procedure</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#1-materials">1. Materials</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#2-setup">2. Setup</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#3-data-collection">3. Data Collection</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#calculations">Calculations</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#1-calculate-the-period">1. Calculate the Period</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#2-determine-g">2. Determine g</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#3-propagate-uncertainties">3. Propagate Uncertainties</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#python-code-for-analysis">Python Code for Analysis</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#analysis">Analysis</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deliverables">Deliverables</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -171,7 +201,119 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="problem-1">Problem 1</h1>
+<h2 id="problem-1-measuring-earths-gravitational-acceleration-with-a-pendulum">Problem 1: Measuring Earth's Gravitational Acceleration with a Pendulum</h2>
+<h3 id="motivation">Motivation</h3>
+<p>The acceleration due to gravity (<span class="arithmatex">\(g\)</span>) is a fundamental physical constant that affects a wide variety of phenomena. Accurate measurement of <span class="arithmatex">\(g\)</span> is essential in understanding gravitational interactions, engineering applications, and experimental physics. One reliable method to determine <span class="arithmatex">\(g\)</span> is through the oscillation period of a simple pendulum. The relationship between the pendulum's period and its length allows us to estimate <span class="arithmatex">\(g\)</span> while also analyzing the impact of measurement uncertainties.</p>
+<h3 id="task">Task</h3>
+<p>Measure the local gravitational acceleration <span class="arithmatex">\(g\)</span> using a pendulum setup. Carefully analyze uncertainties to understand the precision of your measurements and how experimental limitations influence the final result.</p>
+<h3 id="procedure">Procedure</h3>
+<h4 id="1-materials">1. Materials</h4>
+<ul>
+<li>A string (1 or 1.5 meters long).</li>
+<li>A small mass (e.g., a metal washer, keychain, or small bag).</li>
+<li>Stopwatch (or smartphone timer).</li>
+<li>Ruler or measuring tape.</li>
+</ul>
+<h4 id="2-setup">2. Setup</h4>
+<ul>
+<li>Securely attach the weight to the end of the string and fix the other end to a stable point.</li>
+<li>Measure the length <span class="arithmatex">\(L\)</span> of the pendulum from the suspension point to the center of the mass. Record the ruler resolution <span class="arithmatex">\(\Delta L\)</span> as:</li>
+</ul>
+<div class="arithmatex">\[
+    \Delta L = \frac{\text{Ruler Resolution}}{2}
+\]</div>
+<h4 id="3-data-collection">3. Data Collection</h4>
+<ul>
+<li>Displace the pendulum by a small angle (&lt;15°) and release.</li>
+<li>Measure the time for 10 oscillations (<span class="arithmatex">\(T_{10}\)</span>). Repeat this 10 times.</li>
+<li>Compute the average <span class="arithmatex">\(\overline{T_{10}}\)</span> and standard deviation <span class="arithmatex">\(\sigma_{T}\)</span>.</li>
+<li>Determine the uncertainty in the mean time:</li>
+</ul>
+<div class="arithmatex">\[
+    \Delta T_{10} = \frac{\sigma_T}{\sqrt{n}} \quad \text{where } n = 10
+\]</div>
+<h3 id="calculations">Calculations</h3>
+<h4 id="1-calculate-the-period">1. Calculate the Period</h4>
+<div class="arithmatex">\[
+ T = \frac{\overline{T_{10}}}{10} \quad \text{and} \quad \Delta T = \frac{\Delta T_{10}}{10}
+\]</div>
+<h4 id="2-determine-g">2. Determine g</h4>
+<div class="arithmatex">\[
+g = \frac{4\pi^2 L}{T^2}
+\]</div>
+<h4 id="3-propagate-uncertainties">3. Propagate Uncertainties</h4>
+<div class="arithmatex">\[
+\Delta g = g \sqrt{ \left(\frac{\Delta L}{L}\right)^2 + \left(\frac{2 \Delta T}{T}\right)^2 }
+\]</div>
+<h3 id="python-code-for-analysis">Python Code for Analysis</h3>
+<pre><code class="language-python">import numpy as np
+
+# Sample data (user should replace with actual values)
+L = 1.00  # length of pendulum in meters
+ruler_resolution = 0.01  # in meters
+T10_measurements = [20.1, 20.3, 20.2, 20.0, 20.4, 20.2, 20.3, 20.1, 20.2, 20.3]  # in seconds
+
+# Calculations
+n = len(T10_measurements)
+T10_array = np.array(T10_measurements)
+T10_mean = np.mean(T10_array)
+sigma_T10 = np.std(T10_array, ddof=1)
+Delta_T10 = sigma_T10 / np.sqrt(n)
+
+T = T10_mean / 10
+Delta_T = Delta_T10 / 10
+
+Delta_L = ruler_resolution / 2
+
+g = (4 * np.pi**2 * L) / (T**2)
+Delta_g = g * np.sqrt((Delta_L / L)**2 + ((2 * Delta_T) / T)**2)
+
+# Output
+print(f"Mean T10: {T10_mean:.4f} s")
+print(f"Standard deviation (σ_T10): {sigma_T10:.4f} s")
+print(f"Period T: {T:.4f} s")
+print(f"g = {g:.4f} m/s²")
+print(f"Uncertainty in g (Δg): {Delta_g:.4f} m/s²")
+
+import matplotlib.pyplot as plt
+
+# Plot individual T10 measurements
+plt.figure(figsize=(8, 5))
+plt.plot(T10_measurements, marker='o', linestyle='-', color='blue', label='T₁₀ Measurements')
+plt.axhline(T10_mean, color='red', linestyle='--', label=f'Mean = {T10_mean:.2f} s')
+plt.title("Measured Times for 10 Oscillations (T₁₀)")
+plt.xlabel("Trial Number")
+plt.ylabel("Time (seconds)")
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+# Show plot
+plt.show()
+
+# Optionally save plot
+plt.savefig("pendulum_T10_measurements.png", dpi=300)
+
+</code></pre>
+<p><img alt="alt text" src="../image.png"/></p>
+<h3 id="analysis">Analysis</h3>
+<ol>
+<li>Compare your measured <span class="arithmatex">\(g\)</span> with the accepted standard value (<span class="arithmatex">\(9.81\, m/s^2\)</span>).</li>
+<li>Discuss:</li>
+<li>The effect of measurement resolution on <span class="arithmatex">\(\Delta L\)</span>.</li>
+<li>Timing variability and its impact on <span class="arithmatex">\(\Delta T\)</span>.</li>
+<li>Experimental assumptions and sources of error (e.g., air resistance, angle, stopwatch lag).</li>
+</ol>
+<h3 id="deliverables">Deliverables</h3>
+<ol>
+<li>A Markdown table including:</li>
+<li>Measured <span class="arithmatex">\(L\)</span>, <span class="arithmatex">\(\Delta L\)</span>, 10 values of <span class="arithmatex">\(T_{10}\)</span>, <span class="arithmatex">\(\overline{T_{10}}\)</span>, <span class="arithmatex">\(\sigma_T\)</span>, and <span class="arithmatex">\(\Delta T\)</span>.</li>
+<li>Calculated values of <span class="arithmatex">\(g\)</span> and <span class="arithmatex">\(\Delta g\)</span>.</li>
+<li>A discussion on:</li>
+<li>Sources of uncertainty.</li>
+<li>Comparison to standard gravity.</li>
+<li>How measurement practices affect result reliability.</li>
+</ol>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
