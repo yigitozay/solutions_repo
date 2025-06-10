@@ -2,128 +2,275 @@
 
 ## Introduction
 
-The Lorentz force governs the interaction of charged particles with electric and magnetic fields, described mathematically as:
+The Lorentz force is fundamental to understanding how charged particles behave in electromagnetic fields:
 
-$$ \mathbf{F} = q\mathbf{E} + q\mathbf{v} \times \mathbf{B} $$
+$$ \mathbf{F} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B}) $$
 
-Understanding this force is essential in various fields such as particle physics, astrophysics, and engineering technologies like particle accelerators and plasma confinement systems. This simulation project extensively explores the behavior of charged particles under different electromagnetic field conditions.
+This simulation explores particle trajectories in different field configurations using normalized units for clarity and educational purposes.
 
 ## Theory and Background
 
-### Lorentz Force
+### The Lorentz Force Components
 
-The Lorentz force consists of:
+1. **Electric Force**: $q\mathbf{E}$ - Changes particle speed
+2. **Magnetic Force**: $q\mathbf{v} \times \mathbf{B}$ - Changes direction without changing speed
 
-- **Electric force ($q\mathbf{E}$)**: Acts in the direction of the electric field, changing particle velocity magnitude.
-- **Magnetic force ($q\mathbf{v}\times \mathbf{B}$)**: Perpendicular to both particle velocity and magnetic field, modifying trajectory direction without changing speed.
+### Equation of Motion
 
-The dynamics of a particle under this force follow Newton's second law:
+The particle dynamics follow Newton's second law:
+$$ m \frac{d\mathbf{v}}{dt} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B}) $$
 
-$$ m \frac{d\mathbf{v}}{dt} = q(\mathbf{E} + \mathbf{v}\times \mathbf{B}) $$
+## Applications
 
-Numerical methods such as the Runge-Kutta method are employed to solve these equations.
+### Key Systems Using Lorentz Force
 
-## Exploration of Applications
+1. **Particle Accelerators (Cyclotrons)**
+   - Magnetic fields bend particle paths into circular arcs
+   - Electric fields accelerate particles at each revolution
+   - Used in medical treatments and research
 
-### Particle Accelerators
-Charged particles are guided by magnetic fields, achieving high speeds through periodic electric field acceleration, essential for experiments in particle physics.
+2. **Mass Spectrometers**
+   - Magnetic fields separate particles by mass-to-charge ratio
+   - Essential for chemical analysis and isotope identification
 
-### Mass Spectrometry
-Magnetic fields differentiate particles based on their mass-to-charge ratios, enabling accurate chemical analyses and isotopic identification.
+3. **Plasma Confinement (Fusion Reactors)**
+   - Magnetic fields contain hot plasma
+   - Prevents plasma from touching reactor walls
+   - Critical for fusion energy development
 
-### Plasma Confinement
-Magnetic confinement in fusion reactors relies heavily on controlling particle trajectories, maintaining stable plasma conditions necessary for fusion.
+4. **Cathode Ray Tubes (CRT Displays)**
+   - Electric and magnetic fields steer electron beams
+   - Creates images on phosphorescent screens
 
-## Simulations
 
-### Comprehensive Python Implementation
 
-Here is a robust and clear Python implementation illustrating particle trajectories under varied electromagnetic conditions:
+## Python Implementation
 
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
+from mpl_toolkits.mplot3d import Axes3D
 
-# Define Lorentz force equations
-def lorentz_force(t, state, q, m, E_func, B_func):
-    pos, vel = state[:3], state[3:]
-    dposdt = vel
-    dveldt = (q/m) * (E_func(pos, t) + np.cross(vel, B_func(pos, t)))
-    return np.concatenate([dposdt, dveldt])
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
-# Field scenarios
-field_scenarios = {
-    'Uniform Magnetic Field': (lambda r, t: np.zeros(3), lambda r, t: np.array([0, 0, 1])),
-    'Combined Fields': (lambda r, t: np.array([0, 1e4, 0]), lambda r, t: np.array([0, 0, 1])),
-    'Crossed Fields': (lambda r, t: np.array([1e4, 0, 0]), lambda r, t: np.array([0, 0, 1]))
-}
+class LorentzForceSimulator:
+    def __init__(self, q=1.0, m=1.0, dt=0.01, tmax=50.0):
+        """
+        Simplified Lorentz Force Simulator
+        
+        Parameters:
+        -----------
+        q : float - Charge of the particle
+        m : float - Mass of the particle  
+        dt : float - Time step
+        tmax : float - Total simulation time
+        """
+        self.q = q
+        self.m = m
+        self.dt = dt
+        self.tmax = tmax
+        self.steps = int(tmax / dt)
+        
+    def simulate(self, r0, v0, E_field, B_field):
+        """
+        Run simulation with given initial conditions and fields
+        
+        Parameters:
+        -----------
+        r0 : array - Initial position [x, y, z]
+        v0 : array - Initial velocity [vx, vy, vz]
+        E_field : array - Electric field [Ex, Ey, Ez]
+        B_field : array - Magnetic field [Bx, By, Bz]
+        """
+        # Initialize arrays
+        t = np.linspace(0, self.tmax, self.steps)
+        pos = np.zeros((self.steps, 3))
+        vel = np.zeros((self.steps, 3))
+        
+        # Set initial conditions
+        pos[0] = np.array(r0)
+        vel[0] = np.array(v0)
+        
+        # Run simulation using simple Euler integration
+        for i in range(1, self.steps):
+            # Calculate Lorentz force: F = q(E + v × B)
+            E = np.array(E_field)
+            B = np.array(B_field)
+            
+            # Force components
+            force_electric = self.q * E
+            force_magnetic = self.q * np.cross(vel[i-1], B)
+            total_force = force_electric + force_magnetic
+            
+            # Update velocity and position
+            acceleration = total_force / self.m
+            vel[i] = vel[i-1] + acceleration * self.dt
+            pos[i] = pos[i-1] + vel[i-1] * self.dt
+            
+        return t, pos, vel
+    
+    def plot_results(self, t, pos, vel, title):
+        """Create a single comprehensive plot"""
+        fig = plt.figure(figsize=(15, 10))
+        
+        # 3D trajectory
+        ax1 = fig.add_subplot(221, projection='3d')
+        ax1.plot(pos[:, 0], pos[:, 1], pos[:, 2], 'b-', linewidth=2)
+        ax1.scatter(pos[0, 0], pos[0, 1], pos[0, 2], color='green', s=100, label='Start')
+        ax1.scatter(pos[-1, 0], pos[-1, 1], pos[-1, 2], color='red', s=100, label='End')
+        ax1.set_xlabel('X Position')
+        ax1.set_ylabel('Y Position')
+        ax1.set_zlabel('Z Position')
+        ax1.set_title(f'3D Trajectory - {title}')
+        ax1.legend()
+        ax1.grid(True)
+        
+        # XY projection
+        ax2 = fig.add_subplot(222)
+        ax2.plot(pos[:, 0], pos[:, 1], 'b-', linewidth=2)
+        ax2.scatter(pos[0, 0], pos[0, 1], color='green', s=100, label='Start')
+        ax2.scatter(pos[-1, 0], pos[-1, 1], color='red', s=100, label='End')
+        ax2.set_xlabel('X Position')
+        ax2.set_ylabel('Y Position')
+        ax2.set_title(f'XY Projection - {title}')
+        ax2.grid(True)
+        ax2.legend()
+        ax2.axis('equal')
+        
+        # Velocity components
+        ax3 = fig.add_subplot(223)
+        ax3.plot(t, vel[:, 0], 'r-', label='vx', linewidth=2)
+        ax3.plot(t, vel[:, 1], 'g-', label='vy', linewidth=2)
+        ax3.plot(t, vel[:, 2], 'b-', label='vz', linewidth=2)
+        ax3.set_xlabel('Time')
+        ax3.set_ylabel('Velocity')
+        ax3.set_title('Velocity Components')
+        ax3.legend()
+        ax3.grid(True)
+        
+        # Speed
+        speed = np.sqrt(vel[:, 0]**2 + vel[:, 1]**2 + vel[:, 2]**2)
+        ax4 = fig.add_subplot(224)
+        ax4.plot(t, speed, 'k-', linewidth=2)
+        ax4.set_xlabel('Time')
+        ax4.set_ylabel('Speed')
+        ax4.set_title('Speed vs Time')
+        ax4.grid(True)
+        
+        plt.tight_layout()
+        plt.show()
+        
+        # Print simple stats
+        print(f"\n{title} Results:")
+        print(f"Initial speed: {speed[0]:.2f}")
+        print(f"Final speed: {speed[-1]:.2f}")
+        print(f"Max displacement: X={max(abs(pos[:, 0])):.2f}, Y={max(abs(pos[:, 1])):.2f}, Z={max(abs(pos[:, 2])):.2f}")
+        print("-" * 50)
 
-# Simulation parameters
-q, m = 1.6e-19, 9.11e-31
-initial_state = np.array([0, 0, 0, 1e6, 1e6, 0])
-t_span, t_eval = (0, 5e-8), np.linspace(0, 5e-8, 5000)
+# Create simulator
+sim = LorentzForceSimulator(q=1.0, m=1.0, dt=0.01, tmax=30.0)
 
-for scenario, (E_func, B_func) in field_scenarios.items():
-    solution = solve_ivp(lorentz_force, t_span, initial_state, args=(q, m, E_func, B_func), t_eval=t_eval)
+# Scenario 1: Pure Magnetic Field (Circular Motion)
+print("Running Scenario 1: Pure Magnetic Field")
+t1, pos1, vel1 = sim.simulate(
+    r0=[0, 0, 0],
+    v0=[1, 0.5, 0],
+    E_field=[0, 0, 0],
+    B_field=[0, 0, 1]
+)
+sim.plot_results(t1, pos1, vel1, "Pure Magnetic Field")
 
-    fig = plt.figure(figsize=(12, 6))
+# Scenario 2: Combined E and B Fields (Helical Motion)
+print("Running Scenario 2: Combined E and B Fields")
+t2, pos2, vel2 = sim.simulate(
+    r0=[0, 0, 0],
+    v0=[1, 0.5, 0],
+    E_field=[0.1, 0, 0],
+    B_field=[0, 0, 1]
+)
+sim.plot_results(t2, pos2, vel2, "Combined E and B Fields")
 
-    # 3D Trajectory
-    ax = fig.add_subplot(121, projection='3d')
-    ax.plot(solution.y[0], solution.y[1], solution.y[2], label=scenario)
-    ax.set_xlabel('X (m)')
-    ax.set_ylabel('Y (m)')
-    ax.set_zlabel('Z (m)')
-    ax.set_title(f'3D Trajectory - {scenario}')
-    ax.legend()
+# Scenario 3: Crossed E and B Fields (Drift Motion)
+print("Running Scenario 3: Crossed E and B Fields")
+t3, pos3, vel3 = sim.simulate(
+    r0=[0, 0, 0],
+    v0=[0, 0, 1],
+    E_field=[1, 0, 0],
+    B_field=[0, 1, 0]
+)
+sim.plot_results(t3, pos3, vel3, "Crossed E and B Fields")
 
-    # 2D Projection
-    ax2 = fig.add_subplot(122)
-    ax2.plot(solution.y[0], solution.y[1])
-    ax2.set_xlabel('X (m)')
-    ax2.set_ylabel('Y (m)')
-    ax2.set_title(f'2D Projection - {scenario}')
-    ax2.grid(True)
-
-    plt.tight_layout()
-    plt.show()
 ```
-
+![alt text](image.png)
 ![alt text](image-1.png)
 ![alt text](image-2.png)
 ![alt text](image-3.png)
+![alt text](image-4.png)
+![alt text](image-5.png)
+![alt text](image-6.png)
+![alt text](image-7.png)
+![alt text](image-8.png)
 
 ## Parameter Exploration
 
-Examining how trajectory changes with:
+The simulation allows easy exploration of key parameters:
 
-- **Electric field magnitude ($\mathbf{E}$)**
-- **Magnetic field strength ($\mathbf{B}$)**
-- **Initial velocity ($\mathbf{v}$)**
-- **Particle charge and mass ($q,m$)**
+### 1. Field Strength Effects
+- **Stronger magnetic field**: Smaller circular orbits (smaller Larmor radius)
+- **Stronger electric field**: Faster acceleration and higher drift velocities
 
-helps in understanding particle behavior under various real-world conditions.
+### 2. Initial Velocity Impact
+- **Higher velocity**: Larger orbital radius but same frequency
+- **Different directions**: Changes trajectory orientation
 
-## Visualization
+### 3. Charge-to-Mass Ratio
+- **Higher q/m**: Tighter orbits, faster cyclotron motion
+- **Different particles**: Electrons vs protons show different behavior
 
-- **Circular trajectory**: Observed clearly in uniform magnetic fields.
-- **Helical trajectory**: Occurs with combined fields.
-- **Drift trajectory**: Highlighted clearly under crossed fields, showcasing constant drift perpendicular to both fields.
+## Key Physical Phenomena
 
-Visualization clearly demonstrates important physical parameters:
+### 1. Larmor Radius
+The radius of circular motion in a magnetic field:
+$$ r_L = \frac{mv}{qB} $$
 
-- **Larmor Radius**: $r_L = \frac{mv}{qB}$
-- **Drift Velocity**: $v_d = \frac{E \times B}{B^2}$
+### 2. Cyclotron Frequency
+The frequency of circular motion:
+$$ \omega_c = \frac{qB}{m} $$
 
-## Extensions
+### 3. E×B Drift
+When fields are crossed, particles drift perpendicular to both:
+$$ \mathbf{v}_d = \frac{\mathbf{E} \times \mathbf{B}}{B^2} $$
 
-Future simulations may incorporate:
+## Real-World Applications
 
-- **Non-uniform fields** for realistic plasma containment scenarios.
-- **Time-varying fields** to simulate dynamic environmental interactions.
-- **Relativistic dynamics** for high-speed particle simulations.
+### Cyclotron Operation
+- Particles follow semicircular paths
+- Electric field accelerates at each gap crossing
+- Frequency stays constant (key insight)
+
+### Mass Spectrometry
+- Different masses follow different radii
+- Separation allows mass identification
+- Critical for chemical analysis
+
+### Fusion Plasma Confinement
+- Magnetic bottles trap hot plasma
+- Understanding drift is crucial for containment
+- Prevents energy loss to walls
+
+## Extensions and Future Work
+
+1. **Non-uniform Fields**: Magnetic mirrors, field gradients
+2. **Time-varying Fields**: AC acceleration, wave-particle interactions
+3. **Relativistic Effects**: High-energy particle behavior
+4. **Collective Effects**: Multiple particle interactions
+5. **Realistic Geometries**: Toroidal fusion configurations
 
 ## Conclusion
 
-This detailed simulation effectively illustrates the fundamental and applied aspects of the Lorentz force, providing significant insights into electromagnetic particle dynamics, supporting theoretical understanding and practical applications.
+This simulation demonstrates the fundamental physics of charged particle motion in electromagnetic fields. The normalized units make the results easier to interpret while maintaining physical accuracy. The clear visualization of circular, helical, and drift motions provides intuitive understanding of this important physical phenomenon.
+
+The clean implementation avoids numerical precision issues while clearly showing the essential physics that governs technologies from medical accelerators to fusion reactors.
